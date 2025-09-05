@@ -1,0 +1,106 @@
+/* Matrix Background Effect */
+.matrix-char {
+    position: absolute;
+    color: #00FF41;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    opacity: 0;
+    animation: matrix 5s linear infinite;
+}
+
+@keyframes matrix {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Glow Effects */
+.glow-effect {
+    box-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14, 0 0 15px #39FF14;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 30px #39FF14;
+}
+
+/* Cyber Card Hover Effect */
+.cyber-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cyber-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(57, 255, 20, 0.1),
+        rgba(0, 255, 65, 0.1),
+        rgba(0, 255, 255, 0.1)
+    );
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.cyber-card:hover::before {
+    opacity: 1;
+    animation: glitch 0.5s infinite;
+}
+
+.cyber-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(57, 255, 20, 0.3);
+}
+
+/* Typing animation */
+.animate-typing {
+    overflow: hidden;
+    border-right: .15em solid #39FF14;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #39FF14; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #39FF14;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00FF41;
+}
