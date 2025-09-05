@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roxyu Developer</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'neon-green': '#39FF14',
+            'neon-blue': '#00FFFF',
+            'dark-bg': '#0a0a0a',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .matrix-char {
+      position: absolute;
+      color: #00FF41;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      opacity: 0;
+      animation: matrix 5s linear infinite;
+    }
+    @keyframes matrix {
+      0% { transform: translateY(-100%); opacity: 0; }
+      5% { opacity: 1; }
+      95% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .glow-effect { box-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14; }
+    .hover-glow:hover { box-shadow: 0 0 15px #39FF14; }
+    .cyber-card { transition: all 0.3s ease; }
+    .cyber-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #39FF14; }
+    .ad-placeholder {
+      border: 1px dashed #39FF14;
+      display: flex; justify-content: center; align-items: center;
+      color: #39FF14; font-family: monospace;
+      background: #111;
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-gray-300 font-mono">
+
+  <!-- Matrix BG -->
+  <div id="matrix-bg" class="fixed inset-0 z-0 opacity-20"></div>
+
+  <!-- Header -->
+  <header class="relative z-10 container mx-auto px-4 py-6 flex justify-between items-center border-b border-neon-green">
+    <div class="flex items-center space-x-4">
+      <div class="h-10 w-10 rounded-full border-2 border-neon-green overflow-hidden glow-effect">
+        <img src="assets/img/roxyu logo.png" alt="Roxyu Logo" class="h-full w-full object-cover">
+      </div>
+      <h1 class="text-2xl font-bold text-neon-green glitch">Roxyu Developer</h1>
+    </div>
+    <nav>
+      <ul class="flex space-x-6">
+        <li><a href="#about" class="text-neon-green hover:text-white">About</a></li>
+        <li><a href="#projects" class="text-neon-green hover:text-white">Projects</a></li>
+        <li><a href="#contact" class="text-neon-green hover:text-white">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="relative z-10 container mx-auto px-4 py-8">
+    <!-- Hero -->
+    <section class="mb-16 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 text-neon-green">Welcome to My Digital Realm</h2>
+      <p class="text-xl md:text-2xl text-neon-blue">Full Stack Developer & Security Enthusiast</p>
+    </section>
+
+    <!-- Adsterra Top -->
+    <div class="mb-12 flex justify-center">
+      <div class="ad-placeholder w-[728px] h-[90px]">
+        ADSTERRA BANNER 728x90
+      </div>
+    </div>
+
+    <!-- About -->
+    <section id="about" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Biography</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <p class="mb-4">I am a passionate developer with expertise in android apps, algorithm trading, and cybersecurity.</p>
+          <p class="mb-4">When I'm not coding, I research new technologies, contribute to open source projects, or explore cybersecurity trends.</p>
+          <p>I believe in the power of code to transform ideas into reality and am constantly pushing boundaries.</p>
+        </div>
+        <div class="flex items-center justify-center">
+          <div class="h-64 w-64 border-2 border-neon-green rounded-lg glow-effect overflow-hidden bg-gray-900">
+            <img src="assets/img/roxyu logo.png" alt="Profile Image" class="h-full w-full object-cover">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Adsterra Middle -->
+    <div class="mb-12 flex justify-center">
+      <div class="ad-placeholder w-[300px] h-[250px]">
+        ADSTERRA BANNER 300x250
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <section id="projects" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+        <!-- Inject otomatis -->
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Contact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <p class="mb-6">Feel free to reach out for collaborations, questions, or just to say hello.</p>
+          <div class="space-y-4">
+            <div>Email: <span class="text-neon-green">roxyudeveloper@gmail.com</span></div>
+            <div>TikTok: <a href="https://tiktok.com/@souueei" class="text-neon-green">@souueei</a></div>
+          </div>
+        </div>
+        <div>
+          <form class="space-y-4">
+            <div>
+              <label for="name" class="block text-neon-green mb-2">Name</label>
+              <input id="name" type="text" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2">
+            </div>
+            <div>
+              <label for="email" class="block text-neon-green mb-2">Email</label>
+              <input id="email" type="email" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2">
+            </div>
+            <div>
+              <label for="message" class="block text-neon-green mb-2">Message</label>
+              <textarea id="message" rows="4" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2"></textarea>
+            </div>
+            <button type="submit" class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue">Send</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Adsterra Bottom -->
+    <div class="mb-12 flex justify-center">
+      <div class="ad-placeholder w-[728px] h-[90px]">
+        ADSTERRA BANNER 728x90
+      </div>
+    </div>
+  </main>
+
+  <footer class="relative z-10 border-t border-neon-green py-6 text-center">
+    <p>&copy; 2025 Roxyu Developer</p>
+  </footer>
+
+  <!-- Inline Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      createMatrix();
+      loadProjects();
+    });
+
+    function createMatrix() {
+      const container = document.getElementById("matrix-bg");
+      const chars = "01";
+      const fontSize = 14;
+      const cols = Math.floor(window.innerWidth / fontSize);
+      for (let i = 0; i < cols; i++) {
+        const c = document.createElement("div");
+        c.className = "matrix-char";
+        c.style.left = (i * fontSize) + "px";
+        c.style.animationDelay = (Math.random() * 5) + "s";
+        c.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+        container.appendChild(c);
+      }
+    }
+
+    async function loadProjects() {
+      const grid = document.getElementById("projects-grid");
+      try {
+        const res = await fetch("assets/project/projects.json");
+        const projects = await res.json();
+        projects.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "cyber-card bg-gray-900 rounded-lg border border-neon-green p-4 hover-glow";
+          card.innerHTML = `
+            <a href="${p.url}" target="_blank">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-40 object-cover mb-3 rounded">
+              <h3 class="text-xl font-bold text-neon-green mb-2">${p.title}</h3>
+              <p class="text-gray-400">${p.description}</p>
+            </a>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        console.error("Gagal load projects.json:", e);
+      }
+    }
+  </script>
+</body>
+</html>
