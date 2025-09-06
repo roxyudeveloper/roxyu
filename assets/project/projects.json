@@ -4,5 +4,11 @@
     "description": "EA (Robot trading yang khusus xauusd/emas)",
     "url": "assets/project/xauusd.html",
     "image": "assets/img/roxyu ea.png"
+  },
+  {
+    "title": "Roxyu Screen Record",
+    "description": "Screen Record tanpa watermark,gampang di pake",
+    "url": "assets/project/s.html",
+    "image": "assets/img/roxyu screen.png"
   }
 ]
