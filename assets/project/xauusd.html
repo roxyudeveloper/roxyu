@@ -44,6 +44,11 @@
     .hover-glow:hover { box-shadow: 0 0 15px #39FF14; }
     .cyber-card { transition: all 0.3s ease; }
     .cyber-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #39FF14; }
+
+    /* Small tweak for the DANA QR block so it looks good on small screens */
+    @media (max-width: 640px) {
+      .donation-qr { width: 48vw; height: 48vw; }
+    }
   </style>
 </head>
 <body class="bg-dark-bg text-gray-300 font-mono overflow-x-hidden">
@@ -83,12 +88,31 @@
             <li>Baca catatan penggunaan</li>
           </ul>
           <a href="https://drive.google.com/uc?export=download&id=1bCohVO9CvVFcsPK167KpGntO_l_pAtN-" 
-            class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue transition-colors duration-300">
+            class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue transition-colors duration-300 inline-block">
             Download Disini Bang !!!
           </a>
         </div>
       </div>
     </section>
+
+    <!-- Donasi / Sedekah (QR DANA) -->
+    <section id="donasi" class="mb-12">
+      <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">Sawer Dikit Ga Ngaruh</h3>
+
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- QR image -->
+        <div class="w-64 h-64 flex items-center justify-center border-2 border-neon-green rounded-lg overflow-hidden glow-effect bg-gray-900 donation-qr">
+          <!-- path sesuai permintaan: assets/img/dana.jpg -->
+          <img src="../img/dana.jpg" alt="QR DANA Roxyu" class="object-contain w-full h-full">
+        </div>
+
+        <!-- Keterangan -->
+        <div class="text-gray-300 max-w-xl">
+          <p class="mb-2">Scan QR <span class="text-neon-green">DANA</span>. Sawer Dikit Ga Ngaruh !</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
