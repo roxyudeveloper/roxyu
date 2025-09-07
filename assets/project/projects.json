@@ -1,7 +1,13 @@
 [
   {
-    "title": "Roxyu EA XAUUSD 1.0.1",
-    "description": "EA (Robot trading yang khusus xauusd/emas)",
+    "title": "Roxyu XAU VIP",
+    "description": "EA (Hybrid timeframe)",
+    "url": "assets/project/xauusdxau_vip.html",
+    "image": "assets/img/roxyu ea.png"
+  },
+  {
+    "title": "Roxyu EA XAUUSD Gratis",
+    "description": "EA (Timeframe besar H1)",
     "url": "assets/project/xauusd.html",
     "image": "assets/img/roxyu ea.png"
   },
