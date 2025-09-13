@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roxyu XAU</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'neon-green': '#39FF14',
+            'neon-blue': '#00FFFF',
+            'dark-bg': '#0a0a0a',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Efek neon & glitch */
+    .matrix-char {
+      position: absolute;
+      color: #00FF41;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      opacity: 0;
+      animation: matrix 5s linear infinite;
+    }
+    @keyframes matrix {
+      0% { transform: translateY(-100%); opacity: 0; }
+      5% { opacity: 1; }
+      95% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .glow-effect { box-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14; }
+    .hover-glow:hover { box-shadow: 0 0 15px #39FF14; }
+    .cyber-card { transition: all 0.3s ease; }
+    .cyber-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #39FF14; }
+
+    /* Small tweak for the DANA QR block so it looks good on small screens */
+    @media (max-width: 640px) {
+      .donation-qr { width: 48vw; height: 48vw; }
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-gray-300 font-mono overflow-x-hidden">
+
+  <!-- Matrix BG -->
+  <div id="matrix-bg" class="fixed inset-0 z-0 opacity-20"></div>
+
+  <!-- Header -->
+  <header class="relative z-10 container mx-auto px-4 py-6 flex justify-between items-center border-b border-neon-green">
+    <a href="../../index.html" class="flex items-center space-x-4">
+      <div class="h-10 w-10 rounded-full border-2 border-neon-green overflow-hidden glow-effect">
+        <img src="../img/dandan.png" alt="Roxyu Logo" class="h-full w-full object-cover">
+      </div>
+      <h1 class="text-2xl font-bold text-neon-green glitch">Roxyu Developer</h1>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="relative z-10 container mx-auto px-4 py-8">
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-4 text-neon-green">Roxyu XAU VIP</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Gambar -->
+        <div class="flex items-center justify-center border-2 border-neon-green rounded-lg glow-effect overflow-hidden">
+          <img src="../img/roxyu ea.png" alt="Roxyu EA Preview" class="object-cover w-full h-full">
+        </div>
+        <!-- Deskripsi -->
+        <div>
+          <p class="mb-4">
+            <span class="text-neon-green">Roxyu EA</span> adalah Expert Advisor (robot trading)
+            yang dirancang untuk pasangan emas (XAUUSD). Masih dalam pengembangan.
+          </p>
+          <ul class="list-disc list-inside text-gray-400 mb-4">
+            <li>EA masih dalam pengembangan</li>
+            <li>Jika ada masukan bisa halo" aja bosku...</li>
+            <li>MT4/MT5 ready bosku</li>
+            <li>Setting" sendiri sesuai style trading kalian yak</li>
+            <li>GRATEESSSS !!!</li>
+            <li>Donate lah masa engga :D</li>
+          </ul>
+          <a href="//drive.google.com/uc?export=download&id=1P1vnIOji4YVYAL1xEYDnCQXor8E0Nc0m" 
+            class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue transition-colors duration-300 inline-block">
+            Download Disini Bang !!!
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Donasi / Sedekah (QR DANA) -->
+    <section id="donasi" class="mb-12">
+      <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">Sawer Dikit Ga Ngaruh..</h3>
+
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- QR image -->
+        <div class="w-64 h-64 flex items-center justify-center border-2 border-neon-green rounded-lg overflow-hidden glow-effect bg-gray-900 donation-qr">
+          <!-- path sesuai permintaan: assets/img/dana.jpg -->
+          <img src="../img/dana.jpg" alt="QR DANA Roxyu" class="object-contain w-full h-full">
+        </div>
+
+        <!-- Keterangan -->
+        <div class="text-gray-300 max-w-xl">
+          <p class="mb-2">Scan QR <span class="text-neon-green">DANA</span>. Sawer Dikit Ga Ngaruh !</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-neon-green py-6 text-center">
+    <p>&copy; 2025 Roxyu Developer. Dibuat dengan rasa penasaran & kopi.</p>
+  </footer>
+
+  <!-- Inline Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      createMatrix();
+    });
+
+    function createMatrix() {
+      const container = document.getElementById("matrix-bg");
+      const chars = "01";
+      const fontSize = 14;
+      const cols = Math.floor(window.innerWidth / fontSize);
+      for (let i = 0; i < cols; i++) {
+        const c = document.createElement("div");
+        c.className = "matrix-char";
+        c.style.left = (i * fontSize) + "px";
+        c.style.animationDelay = (Math.random() * 5) + "s";
+        c.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+        container.appendChild(c);
+      }
+    }
+  </script>
+</body>
+</html>
