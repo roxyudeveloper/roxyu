@@ -1,21 +1,9 @@
 [
   {
-    "title": "Roxyu XAU (Pengembangan1)",
+    "title": "Roxyu EA BAR-BAR",
     "description": "Include MT4/MT5 dengan strategi berbeda",
-    "url": "assets/project/pengembangan1.html",
-    "image": "assets/img/dandan.png"
-  },
-  {
-    "title": "Roxyu XAU VIP",
-    "description": "EA (Hybrid timeframe MT4)",
-    "url": "assets/project/xauvip.html",
-    "image": "assets/img/roxyu ea.png"
-  },
-  {
-    "title": "Roxyu EA XAUUSD Gratis",
-    "description": "EA (Timeframe besar H1 MT5)",
-    "url": "assets/project/xauusd.html",
-    "image": "assets/img/roxyu ea.png"
+    "url": "assets/project/RoxyuBarBar.html",
+    "image": "assets/img/barbar.png"
   },
   {
     "title": "Roxyu Screen Record",
