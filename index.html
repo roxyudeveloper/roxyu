@@ -49,12 +49,69 @@
       color: #39FF14; font-family: monospace;
       background: #111;
     }
+    /* Sticky ads kanan kiri */
+    .side-ad {
+      position: fixed;
+      top: 100px;
+      width: 160px;
+      height: 600px;
+      z-index: 50;
+    }
+    .side-ad.left { left: 10px; }
+    .side-ad.right { right: 10px; }
   </style>
 </head>
 <body class="bg-dark-bg text-gray-300 font-mono">
 
   <!-- Matrix BG -->
   <div id="matrix-bg" class="fixed inset-0 z-0 opacity-20"></div>
+
+  <!-- Iklan Kiri -->
+<div class="side-ad left" id="leftAd">
+  <div class="relative ad-placeholder w-[160px] h-[600px]">
+    <!-- Tombol Close -->
+    <button onclick="document.getElementById('leftAd').style.display='none'" 
+      class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">
+      ✕
+    </button>
+
+    <!-- Adsterra 160x600 -->
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '008173cf37f44b1ab0927bb0b615ce88',
+        'format' : 'iframe',
+        'height' : 600,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
+  </div>
+</div>
+
+  <!-- Iklan Kanan -->
+<div class="side-ad right" id="rightAd">
+  <div class="relative ad-placeholder w-[160px] h-[600px]">
+    <!-- Tombol Close -->
+    <button onclick="document.getElementById('rightAd').style.display='none'" 
+      class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">
+      ✕
+    </button>
+
+    <!-- Adsterra 160x600 -->
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '008173cf37f44b1ab0927bb0b615ce88',
+        'format' : 'iframe',
+        'height' : 600,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
+  </div>
+</div>
+
 
   <!-- Header -->
   <header class="relative z-10 container mx-auto px-4 py-6 flex justify-between items-center border-b border-neon-green">
@@ -138,31 +195,32 @@
         <script type="text/javascript" src="//annoyinghooteraccomplished.com/e4337ddf00ab61bac048cda64141466c/invoke.js"></script>
       </div>
     </div>
+    
 
-    <!-- Donasi / Sedekah (QR DANA) -->
-    <section id="donasi" class="mb-12">
-      <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">Sawer Dikit Ga Ngaruh</h3>
-
-      <div class="flex flex-col md:flex-row items-center gap-6">
-        <!-- QR image -->
-        <div class="w-64 h-64 flex items-center justify-center border-2 border-neon-green rounded-lg overflow-hidden glow-effect bg-gray-900 donation-qr">
-          <!-- path sesuai permintaan: assets/img/dana.jpg -->
-          <img src="assets/img/dana.jpg" alt="QR DANA Roxyu" class="object-contain w-full h-full">
-        </div>
-
-        <!-- Keterangan -->
-        <div class="text-gray-300 max-w-xl">
-          <p class="mb-2">Scan QR <span class="text-neon-green">DANA</span>. Sawer Dikit Ga Ngaruh !</p>
-        </div>
-      </div>
-    </section>
+    <!-- Donasi Saweria -->
+<section id="donasi-saweria" class="mb-12">
+  <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">
+    Sawer Dikit Ga Ngaruh..
+  </h3>
+  <div class="flex flex-col md:flex-row items-center gap-6">
+    <!-- Keterangan -->
+    <div class="text-gray-300 max-w-xl">
+      <p class="mb-2">
+        <span class="text-neon-green">Saweria</span> buat langsung nyasar ke 
+        <a href="https://saweria.co/roxyudeveloper" target="_blank" 
+           class="text-neon-blue underline hover:text-neon-green transition-colors">
+          saweria.co/roxyudeveloper
+        </a>.
+      </p>
+      <p class="italic text-sm">🔥 Sawer dikit biar mimin makin semangat ngoding!</p>
+    </div>
+  </div>
+</section>
 
     <!-- Projects -->
     <section id="projects" class="mb-16">
       <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Projek</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
-        <!-- Inject otomatis -->
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid"></div>
     </section>
 
     <!-- Contact -->
@@ -195,6 +253,8 @@
         </div>
       </div>
     </section>
+    <script async="async" data-cfasync="false" src="//annoyinghooteraccomplished.com/173d7be35ae222615284308fa711dbf2/invoke.js"></script>
+<div id="container-173d7be35ae222615284308fa711dbf2"></div>
 
     <!-- Adsterra Bottom -->
     <div class="mb-12 flex justify-center">
@@ -212,12 +272,14 @@
         <script type="text/javascript" src="//annoyinghooteraccomplished.com/8a266fdc5e21e1d7c25a226242993e3f/invoke.js"></script>
       </div>
     </div>
+  </main>
 
   <footer class="relative z-10 border-t border-neon-green py-6 text-center">
     <p>&copy; 2025 Roxyu Developer — Dibuat dengan rasa penasaran & kopi.</p>
   </footer>
+  
 
-  <!-- Inline Script -->
+  <!-- Matrix + Load Projects -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       createMatrix();
@@ -261,5 +323,11 @@
       }
     }
   </script>
+
+  <!-- Popup Adsterra -->
+  <!-- Ganti dengan kode popup asli dari Adsterra -->
+  <script type='text/javascript' src='//annoyinghooteraccomplished.com/0b/f6/96/0bf696d3723384b87d3d7e4753f238dd.js'></script>
+  
+
 </body>
 </html>

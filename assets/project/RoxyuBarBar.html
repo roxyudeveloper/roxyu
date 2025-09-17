@@ -45,9 +45,19 @@
     .cyber-card { transition: all 0.3s ease; }
     .cyber-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #39FF14; }
 
-    /* Small tweak for the DANA QR block so it looks good on small screens */
+    /* Side Ads */
+    .side-ad {
+      position: fixed;
+      top: 80px;
+      z-index: 50;
+    }
+    .side-ad.left { left: 0; }
+    .side-ad.right { right: 0; }
+
+    /* Small tweak for the DANA QR block */
     @media (max-width: 640px) {
       .donation-qr { width: 48vw; height: 48vw; }
+      .side-ad { display: none; } /* hide side ads on small screens */
     }
   </style>
 </head>
@@ -65,6 +75,42 @@
       <h1 class="text-2xl font-bold text-neon-green glitch">Roxyu Developer</h1>
     </a>
   </header>
+
+  <!-- Iklan Kiri -->
+  <div class="side-ad left" id="leftAd">
+    <div class="relative ad-placeholder w-[160px] h-[600px]">
+      <button onclick="document.getElementById('leftAd').style.display='none'" 
+        class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">✕</button>
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '008173cf37f44b1ab0927bb0b615ce88',
+          'format' : 'iframe',
+          'height' : 600,
+          'width' : 160,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
+    </div>
+  </div>
+
+  <!-- Iklan Kanan -->
+  <div class="side-ad right" id="rightAd">
+    <div class="relative ad-placeholder w-[160px] h-[600px]">
+      <button onclick="document.getElementById('rightAd').style.display='none'" 
+        class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">✕</button>
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '008173cf37f44b1ab0927bb0b615ce88',
+          'format' : 'iframe',
+          'height' : 600,
+          'width' : 160,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
+    </div>
+  </div>
 
   <!-- Main Content -->
   <main class="relative z-10 container mx-auto px-4 py-8">
@@ -92,43 +138,59 @@
             class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue transition-colors duration-300 inline-block">
             Download Disini Bang !
           </a>
+
           <!-- Video Player -->
           <div class="mt-6">
-              <h4 class="text-xl font-bold text-neon-green mb-2">Cara Download -_-</h4>
-              <div class="w-full max-w-2xl border-2 border-neon-green rounded-lg glow-effect overflow-hidden">
+            <h4 class="text-xl font-bold text-neon-green mb-2">Cara Download -_-</h4>
+            <div class="w-full max-w-2xl border-2 border-neon-green rounded-lg glow-effect overflow-hidden">
               <iframe 
-              class="w-full aspect-video" 
-              src="https://www.youtube.com/embed/j1xproCh3Z0" 
-              title="YouTube video player" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>
-              </iframe>
+                class="w-full aspect-video" 
+                src="https://www.youtube.com/embed/j1xproCh3Z0" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
             </div>
           </div>
-
-
         </div>
       </div>
     </section>
 
-    <!-- Donasi / Sedekah (QR DANA) -->
-    <section id="donasi" class="mb-12">
-      <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">Sawer Dikit Ga Ngaruh..</h3>
-
-      <div class="flex flex-col md:flex-row items-center gap-6">
-        <!-- QR image -->
-        <div class="w-64 h-64 flex items-center justify-center border-2 border-neon-green rounded-lg overflow-hidden glow-effect bg-gray-900 donation-qr">
-          <!-- path sesuai permintaan: assets/img/dana.jpg -->
-          <img src="../img/dana.jpg" alt="QR DANA Roxyu" class="object-contain w-full h-full">
-        </div>
-
-        <!-- Keterangan -->
-        <div class="text-gray-300 max-w-xl">
-          <p class="mb-2">Scan QR <span class="text-neon-green">DANA</span>. Sawer Dikit Ga Ngaruh !</p>
-        </div>
+    <!-- Adsterra Bottom -->
+    <div class="mb-12 flex justify-center">
+      <div class="ad-placeholder w-[728px] h-[90px]">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '8a266fdc5e21e1d7c25a226242993e3f',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//annoyinghooteraccomplished.com/8a266fdc5e21e1d7c25a226242993e3f/invoke.js"></script>
       </div>
-    </section>
+    </div>
+
+    <!-- Donasi Saweria -->
+<section id="donasi-saweria" class="mb-12">
+  <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">
+    Sawer Dikit Ga Ngaruh..
+  </h3>
+  <div class="flex flex-col md:flex-row items-center gap-6">
+    <!-- Keterangan -->
+    <div class="text-gray-300 max-w-xl">
+      <p class="mb-2">
+        <span class="text-neon-green">Saweria</span> buat langsung nyasar ke 
+        <a href="https://saweria.co/roxyudeveloper" target="_blank" 
+           class="text-neon-blue underline hover:text-neon-green transition-colors">
+          saweria.co/roxyudeveloper
+        </a>.
+      </p>
+      <p class="italic text-sm">🔥 Sawer dikit biar mimin makin semangat ngoding!</p>
+    </div>
+  </div>
+</section>
 
   </main>
 
@@ -142,7 +204,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       createMatrix();
     });
-
     function createMatrix() {
       const container = document.getElementById("matrix-bg");
       const chars = "01";
