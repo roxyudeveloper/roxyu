@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roxyu Developer</title>
+  <title>Roxyu Developer - Terminal</title>
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Tailwind Config -->
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            'neon-green': '#39FF14',
-            'neon-blue': '#00FFFF',
-            'dark-bg': '#0a0a0a',
+            'terminal-green': '#00FF41',
+            'terminal-red': '#FF0000',
+            'terminal-yellow': '#FFFF00',
+            'terminal-blue': '#00FFFF',
+            'dark-bg': '#000000',
+            'terminal-bg': '#0C0C0C',
+          },
+          animation: {
+            'blink': 'blink 1s step-end infinite',
+            'glitch': 'glitch 2s infinite',
+            'scan': 'scan 2s linear infinite',
           }
         }
       }
@@ -25,306 +30,551 @@
   </script>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap');
+    
+    * {
+      font-family: 'Fira Code', 'Courier New', monospace;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .terminal-cursor::after {
+      content: '█';
+      animation: blink 1s step-end infinite;
+    }
+
+    .glitch-effect {
+      animation: glitch 0.3s, blur 0.3s, hue 0.3s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate-reverse;
+    }
+
+    .scan-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00FF41, transparent);
+      animation: scan 3s linear infinite;
+      z-index: 1000;
+    }
+
+    .matrix-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.1;
+    }
+
     .matrix-char {
       position: absolute;
       color: #00FF41;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      opacity: 0;
-      animation: matrix 5s linear infinite;
+      font-size: 12px;
+      animation: matrix-fall 8s linear infinite;
     }
-    @keyframes matrix {
-      0% { transform: translateY(-100%); opacity: 0; }
-      5% { opacity: 1; }
-      95% { opacity: 1; }
+
+    @keyframes matrix-fall {
+      0% { transform: translateY(-100vh); opacity: 1; }
       100% { transform: translateY(100vh); opacity: 0; }
     }
-    .glow-effect { box-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14; }
-    .hover-glow:hover { box-shadow: 0 0 15px #39FF14; }
-    .cyber-card { transition: all 0.3s ease; }
-    .cyber-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #39FF14; }
-    .ad-placeholder {
-      border: 1px dashed #39FF14;
-      display: flex; justify-content: center; align-items: center;
-      color: #39FF14; font-family: monospace;
-      background: #111;
-    }
-    /* Sticky ads kanan kiri */
-    .side-ad {
+
+    .boot-sequence {
       position: fixed;
-      top: 100px;
-      width: 160px;
-      height: 600px;
-      z-index: 50;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+      color: #00FF41;
     }
-    .side-ad.left { left: 10px; }
-    .side-ad.right { right: 10px; }
+
+    .boot-text {
+      margin: 2px 0;
+      font-size: 14px;
+    }
+
+    .ascii-art {
+      font-size: 8px;
+      line-height: 1;
+      color: #00FF41;
+      white-space: pre;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .terminal-window {
+      background: #0C0C0C;
+      border: 1px solid #00FF41;
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    }
+
+    .terminal-header {
+      background: #1a1a1a;
+      padding: 8px 12px;
+      border-bottom: 1px solid #00FF41;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27CA3F; }
+
+    .hack-card {
+      background: #0C0C0C;
+      border: 1px solid #00FF41;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hack-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00FF41, transparent, #00FF41);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .hack-card:hover::before {
+      opacity: 1;
+    }
+
+    .hack-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 25px rgba(0, 255, 65, 0.4);
+    }
+
+    .saweria-terminal {
+      background: #0C0C0C;
+      border: 1px solid #00FF41;
+      border-radius: 4px;
+      padding: 1rem;
+      margin: 1rem 0;
+      position: relative;
+    }
+
+    .saweria-terminal::before {
+      content: '> DONATION_PROTOCOL_INITIATED...';
+      position: absolute;
+      top: -12px;
+      left: 12px;
+      background: #0C0C0C;
+      padding: 0 8px;
+      color: #00FF41;
+      font-size: 12px;
+    }
+
+    .loading-bar {
+      width: 100%;
+      height: 4px;
+      background: #1a1a1a;
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .loading-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #00FF41, #00FFFF);
+      animation: loading 2s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+
+    .terminal-prompt {
+      color: #00FF41;
+    }
+
+    .terminal-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00FF41;
+      width: 100%;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00FF41;
+      animation: blink 2s infinite;
+    }
   </style>
 </head>
-<body class="bg-dark-bg text-gray-300 font-mono">
+<body class="bg-dark-bg text-terminal-green overflow-x-hidden">
 
-  <!-- Matrix BG -->
-  <div id="matrix-bg" class="fixed inset-0 z-0 opacity-20"></div>
-
-  <!-- Iklan Kiri -->
-<div class="side-ad left" id="leftAd">
-  <div class="relative ad-placeholder w-[160px] h-[600px]">
-    <!-- Tombol Close -->
-    <button onclick="document.getElementById('leftAd').style.display='none'" 
-      class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">
-      ✕
-    </button>
-
-    <!-- Adsterra 160x600 -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '008173cf37f44b1ab0927bb0b615ce88',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
-  </div>
-</div>
-
-  <!-- Iklan Kanan -->
-<div class="side-ad right" id="rightAd">
-  <div class="relative ad-placeholder w-[160px] h-[600px]">
-    <!-- Tombol Close -->
-    <button onclick="document.getElementById('rightAd').style.display='none'" 
-      class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-800">
-      ✕
-    </button>
-
-    <!-- Adsterra 160x600 -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '008173cf37f44b1ab0927bb0b615ce88',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//annoyinghooteraccomplished.com/008173cf37f44b1ab0927bb0b615ce88/invoke.js"></script>
-  </div>
-</div>
-
-
-  <!-- Header -->
-  <header class="relative z-10 container mx-auto px-4 py-6 flex justify-between items-center border-b border-neon-green">
-    <div class="flex items-center space-x-4">
-      <div class="h-10 w-10 rounded-full border-2 border-neon-green overflow-hidden glow-effect">
-        <img src="assets/img/roxyu logo.png" alt="Roxyu Logo" class="h-full w-full object-cover">
-      </div>
-      <h1 class="text-2xl font-bold text-neon-green glitch">Roxyu Developer</h1>
+  <!-- Boot Sequence -->
+  <div id="boot-sequence" class="boot-sequence">
+    <div class="boot-text">ROXYU_TERMINAL v2.1.337 booting...</div>
+    <div class="boot-text">Loading kernel modules... [OK]</div>
+    <div class="boot-text">Initializing HC protocols... [OK]</div>
+    <div class="boot-text">Establishing secure connection... [OK]</div>
+    <div class="boot-text">Loading SQL... [OK]</div>
+    <div class="boot-text">System ready. Welcome, user.</div>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
     </div>
-    <nav>
-      <ul class="flex space-x-6">
-        <li><a href="#about" class="text-neon-green hover:text-white">Tentang</a></li>
-        <li><a href="#projects" class="text-neon-green hover:text-white">Projek</a></li>
-        <li><a href="#contact" class="text-neon-green hover:text-white">Kontak</a></li>
-      </ul>
-    </nav>
-  </header>
+  </div>
 
-  <main class="relative z-10 container mx-auto px-4 py-8">
-    <!-- Hero -->
-    <section class="mb-16 text-center">
-      <h2 class="text-4xl md:text-5xl font-bold mb-4 text-neon-green">Tempatnya Ide & Eksperimen</h2>
-      <p class="text-xl md:text-2xl text-neon-blue">Lagi butuh apa, bos?</p>
-    </section>
+  <!-- Scan Line Effect -->
+  <div class="scan-line"></div>
 
-    <!-- Adsterra Top -->
-    <div class="mb-12 flex justify-center">
-      <div class="ad-placeholder w-[728px] h-[90px]">
-        <!-- Adsterra Banner 728x90 -->
-        <script type="text/javascript">
-          atOptions = {
-            'key' : '8a266fdc5e21e1d7c25a226242993e3f',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//annoyinghooteraccomplished.com/8a266fdc5e21e1d7c25a226242993e3f/invoke.js"></script>
-      </div>
-    </div>
+  <!-- Matrix Rain -->
+  <div id="matrix-rain" class="matrix-rain"></div>
 
-    <!-- About -->
-    <section id="about" class="mb-16">
-      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Catatan</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <p class="mb-4">
-            Gue bikin aplikasi, software, dan tools karena bisa — dan kadang karena mood juga 😅.
-          </p>
-          <p class="mb-4">
-            Nggak usah ribet atau berlebihan. Yang penting gampang dipakai, sesuai kebutuhan, dan jalan mulus. 
-            Elegan itu bonus, tapi fungsi nomor satu.
-          </p>
-          <p>
-            Ada ide atau request? Kirim aja. Kalau bisa gue kerjain, bakal gue garap. Kalau nggak bisa, gue bilang jujur. 
-            Fair play aja ✌️
-          </p>
+  <!-- Main Terminal -->
+  <div class="relative z-10 min-h-screen p-4">
+    <!-- Terminal Header -->
+    <div class="terminal-window mb-4">
+      <div class="terminal-header">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+        <span class="text-xs text-gray-400">roxyu@terminal:~$</span>
+        <div class="status-indicator ml-auto">
+          <div class="status-dot"></div>
+          <span class="text-terminal-green">ONLINE</span>
         </div>
-        <div class="flex items-center justify-center">
-          <div class="h-64 w-64 border-2 border-neon-green rounded-lg glow-effect overflow-hidden bg-gray-900">
-            <img src="assets/img/roxyu logo.png" alt="Logo Roxyu" class="h-full w-full object-cover">
+      </div>
+      
+      <!-- ASCII Elephant Art -->
+      <div class="p-4 text-center">
+        <pre class="ascii-art" id="elephant-art"></pre>
+        <div class="text-terminal-green text-lg mb-2">ROXYU DEVELOPER</div>
+        <div class="text-terminal-blue text-sm terminal-cursor">Playground</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="terminal-window mb-6">
+      <div class="terminal-header">
+        <span class="text-xs">NAVIGATION_MODULE</span>
+      </div>
+      <div class="p-4">
+        <div class="flex flex-wrap gap-4">
+          <a href="#about" class="terminal-prompt hover:text-terminal-blue transition-colors">[ABOUT]</a>
+          <a href="#projects" class="terminal-prompt hover:text-terminal-blue transition-colors">[PROJECTS]</a>
+          <a href="#contact" class="terminal-prompt hover:text-terminal-blue transition-colors">[CONTACT]</a>
+          <a href="#saweria" class="terminal-prompt hover:text-terminal-blue transition-colors">[DONATE]</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="terminal-window mb-6">
+      <div class="terminal-header">
+        <span class="text-xs">ABOUT.LOG</span>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 text-sm">
+          <div class="terminal-prompt">$ cat developer_profile.txt</div>
+          <div class="pl-4">
+            <div>> Nama: Roxyu Developer</div>
+            <div>> Status: Active Coding Session</div>
+            <div>> Specialization: Applications, Software & Tools</div>
+            <div>> Philosophy: Function over form, elegant solutions</div>
+            <div>> Motto: "Buat yang bisa dipakai, bukan yang cuma bagus dilihat"</div>
+          </div>
+          <div class="mt-4">
+            <div class="terminal-prompt">$ echo "mission_statement"</div>
+            <div class="pl-4 text-terminal-blue">
+              "Gue bikin software karena bisa, dan karena ada yang butuh.<br/>
+              Nggak usah ribet, yang penting jalan dan solve problem.<br/>
+              Ada request? Shoot. Bisa dikerjain? Let's go. 🔥"
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Adsterra Middle -->
-    <div class="mb-12 flex justify-center">
-      <div class="ad-placeholder w-[300px] h-[250px]">
-        <!-- Adsterra Banner 300x250 -->
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'e4337ddf00ab61bac048cda64141466c',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//annoyinghooteraccomplished.com/e4337ddf00ab61bac048cda64141466c/invoke.js"></script>
+    <!-- Saweria Donation Section -->
+    <div id="saweria" class="terminal-window mb-6">
+      <div class="terminal-header">
+        <span class="text-xs">DONATION_PROTOCOL.EXE</span>
       </div>
-    </div>
-    
-
-    <!-- Donasi Saweria -->
-<section id="donasi-saweria" class="mb-12">
-  <h3 class="text-2xl font-bold mb-4 text-neon-green border-b border-neon-green pb-2">
-    Sawer Dikit Ga Ngaruh..
-  </h3>
-  <div class="flex flex-col md:flex-row items-center gap-6">
-    <!-- Keterangan -->
-    <div class="text-gray-300 max-w-xl">
-      <p class="mb-2">
-        <span class="text-neon-green">Saweria</span> buat langsung nyasar ke 
-        <a href="https://saweria.co/roxyudeveloper" target="_blank" 
-           class="text-neon-blue underline hover:text-neon-green transition-colors">
-          saweria.co/roxyudeveloper
-        </a>.
-      </p>
-      <p class="italic text-sm">🔥 Sawer dikit biar mimin makin semangat ngoding!</p>
-    </div>
-  </div>
-</section>
-
-    <!-- Projects -->
-    <section id="projects" class="mb-16">
-      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Projek</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid"></div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="mb-16">
-      <h2 class="text-3xl font-bold mb-8 text-neon-green border-b border-neon-green pb-2">Kontak</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <p class="mb-6">Kalau mau ngobrol, collab, atau sekadar say hi — santai aja.</p>
-          <div class="space-y-4">
-            <div>Email: <span class="text-neon-green">roxyudeveloper@gmail.com</span></div>
-            <div>TikTok: <a href="https://tiktok.com/@souueei" class="text-neon-green">@souueei</a></div>
+      <div class="p-4">
+        <div class="saweria-terminal">
+          <div class="space-y-3">
+            <div class="terminal-prompt">$ ./support_developer --platform=saweria</div>
+            <div class="pl-4">
+              <div class="text-terminal-blue">Initializing donation gateway...</div>
+              <div class="loading-bar">
+                <div class="loading-progress"></div>
+              </div>
+              <div class="text-terminal-green">✓ Connection established</div>
+            </div>
+            
+            <div class="bg-black p-3 border border-terminal-green rounded">
+              <div class="text-terminal-yellow mb-2">🔥 SAWER DIKIT BIAR MIMIN MAKIN SEMANGAT NGODING!</div>
+              <div class="flex items-center space-x-2 mb-2">
+                <span class="terminal-prompt">URL:</span>
+                <a href="https://saweria.co/roxyudeveloper" target="_blank" 
+                   class="text-terminal-blue underline hover:text-terminal-yellow transition-colors">
+                  saweria.co/roxyudeveloper
+                </a>
+              </div>
+              <div class="text-xs text-gray-400">
+                > Direct transfer to developer wallet<br/>
+                > No minimum donation required<br/>
+                > Every coffee counts! ☕
+              </div>
+            </div>
+            
+            <div class="terminal-prompt text-xs">$ donation_status: <span class="text-terminal-green">ACTIVE</span></div>
           </div>
         </div>
-        <div>
-          <form class="space-y-4">
-            <div>
-              <label for="name" class="block text-neon-green mb-2">Nama</label>
-              <input id="name" type="text" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2">
-            </div>
-            <div>
-              <label for="email" class="block text-neon-green mb-2">Surel</label>
-              <input id="email" type="email" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2">
-            </div>
-            <div>
-              <label for="message" class="block text-neon-green mb-2">Pesan</label>
-              <textarea id="message" rows="4" class="w-full bg-gray-900 border border-neon-green rounded px-4 py-2"></textarea>
-            </div>
-            <button type="submit" class="px-6 py-2 bg-neon-green text-dark-bg font-bold rounded hover:bg-neon-blue">Kirim</button>
-          </form>
-        </div>
-      </div>
-    </section>
-    <script async="async" data-cfasync="false" src="//annoyinghooteraccomplished.com/173d7be35ae222615284308fa711dbf2/invoke.js"></script>
-<div id="container-173d7be35ae222615284308fa711dbf2"></div>
-
-    <!-- Adsterra Bottom -->
-    <div class="mb-12 flex justify-center">
-      <div class="ad-placeholder w-[728px] h-[90px]">
-        <!-- Adsterra Banner 728x90 -->
-        <script type="text/javascript">
-          atOptions = {
-            'key' : '8a266fdc5e21e1d7c25a226242993e3f',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//annoyinghooteraccomplished.com/8a266fdc5e21e1d7c25a226242993e3f/invoke.js"></script>
       </div>
     </div>
-  </main>
 
-  <footer class="relative z-10 border-t border-neon-green py-6 text-center">
-    <p>&copy; 2025 Roxyu Developer — Dibuat dengan rasa penasaran & kopi.</p>
-  </footer>
-  
+    <!-- Projects Section -->
+    <div id="projects" class="terminal-window mb-6">
+      <div class="terminal-header">
+        <span class="text-xs">PROJECT_DATABASE.SQL</span>
+      </div>
+      <div class="p-4">
+        <div class="terminal-prompt mb-4">$ SELECT * FROM projects WHERE status='ACTIVE';</div>
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div class="terminal-prompt text-xs mt-4">Query executed successfully. <span id="project-count">0</span> rows returned.</div>
+      </div>
+    </div>
 
-  <!-- Matrix + Load Projects -->
+    <!-- Contact Section -->
+    <div id="contact" class="terminal-window mb-6">
+      <div class="terminal-header">
+        <span class="text-xs">CONTACT_INTERFACE</span>
+      </div>
+      <div class="p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <div class="terminal-prompt mb-4">$ cat contact_info.conf</div>
+            <div class="space-y-2 text-sm pl-4">
+              <div>> Email: <span class="text-terminal-blue">roxyudeveloper@gmail.com</span></div>
+              <div>> TikTok: <a href="https://tiktok.com/@souueei" class="text-terminal-blue hover:text-terminal-yellow">@souueei</a></div>
+              <div>> Status: <span class="text-terminal-green">Available for projects</span></div>
+              <div>> Response Time: <span class="text-terminal-yellow">~24 hours</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="terminal-prompt mb-4">$ nano quick_message.txt</div>
+            <form class="space-y-3">
+              <div class="flex">
+                <span class="terminal-prompt mr-2">Name:</span>
+                <input type="text" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1">
+              </div>
+              <div class="flex">
+                <span class="terminal-prompt mr-2">Email:</span>
+                <input type="email" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1">
+              </div>
+              <div class="flex">
+                <span class="terminal-prompt mr-2">Msg:</span>
+                <textarea rows="3" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1 resize-none"></textarea>
+              </div>
+              <button type="submit" class="bg-terminal-green text-black px-4 py-1 rounded hover:bg-terminal-blue transition-colors">
+                $ SEND_MESSAGE
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      createMatrix();
-      loadProjects();
-    });
+    // ASCII Elephant Art
+    const elephantArt = `
+                                                                                                                                                              
+        ***** **                           ***                                                            *                                                   
+     ******  ****                           ***                                                         **                                                    
+    **   *  *  ***                           **                                                         **                                                    
+   *    *  *    ***                          **                                                         **                                                    
+       *  *      **           ***  ****      **    **   ****                      ****                  **                                                    
+      ** **      **    ***     **** **** *   **     **    ***  *       ****      * ***  *    ****       ** ****       ****    ***  ****        ****           
+      ** **      **   * ***     **   ****    **     **     ****       * ***  *  *   ****    * ***  *    *** ***  *   * ***  *  **** **** *    *  ***  *       
+    **** **      *   *   ***    **           **     **      **       *   ****  **    **    *   ****     **   ****   *   ****    **   ****    *    ****        
+   * *** **     *   **    ***   **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
+      ** *******    ********    **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
+      ** ******     *******     **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
+      ** **         **          **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **       q 
+      ** **         ****    *   ***          **      ******* **     **    **   *******    **    **      **    **   **    **     **    **    **     **       u 
+      ** **          *******     ***         *** *    *****   **     ***** **  ******      ***** **      *****      ***** **    ***   ***    ********       e 
+ **   ** **           *****                   ***                     ***   ** **           ***   **      ***        ***   **    ***   ***     *** ***      s 
+***   *  *                                                                     **                                                                   ***     t 
+ ***    *                                                                      **                                                             ****   ***    i 
+  ******                                                                        **                                                          *******  **     o 
+    ***                                                                                                                                    *     ****       n 
+                                                                                                                                                                                                                                                                                    ";
+    `;
 
-    function createMatrix() {
-      const container = document.getElementById("matrix-bg");
-      const chars = "01";
-      const fontSize = 14;
-      const cols = Math.floor(window.innerWidth / fontSize);
-      for (let i = 0; i < cols; i++) {
-        const c = document.createElement("div");
-        c.className = "matrix-char";
-        c.style.left = (i * fontSize) + "px";
-        c.style.animationDelay = (Math.random() * 5) + "s";
-        c.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-        container.appendChild(c);
+    // Boot sequence
+    let bootComplete = false;
+    
+    setTimeout(() => {
+      document.getElementById('boot-sequence').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('boot-sequence').style.display = 'none';
+        bootComplete = true;
+        initializeEffects();
+      }, 500);
+    }, 4000);
+
+    function initializeEffects() {
+      // Set elephant art
+      document.getElementById('elephant-art').textContent = elephantArt;
+      
+      // Matrix rain
+      createMatrixRain();
+      
+      // Load projects
+      loadProjects();
+      
+      // Terminal typing effect
+      startTerminalEffects();
+    }
+
+    function createMatrixRain() {
+      const container = document.getElementById('matrix-rain');
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      
+      for (let i = 0; i < 50; i++) {
+        const char = document.createElement('div');
+        char.className = 'matrix-char';
+        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+        char.style.left = Math.random() * window.innerWidth + 'px';
+        char.style.animationDelay = Math.random() * 8 + 's';
+        char.style.animationDuration = (8 + Math.random() * 4) + 's';
+        container.appendChild(char);
       }
     }
 
     async function loadProjects() {
-      const grid = document.getElementById("projects-grid");
+      const grid = document.getElementById('projects-grid');
       try {
-        const res = await fetch("assets/project/projects.json");
+        const res = await fetch('assets/project/projects.json');
         const projects = await res.json();
-        projects.forEach(p => {
-          const card = document.createElement("div");
-          card.className = "cyber-card bg-gray-900 rounded-lg border border-neon-green p-4 hover-glow";
-          card.innerHTML = `
-            <a href="${p.url}" target="_blank">
-              <img src="${p.image}" alt="${p.title}" class="w-full h-40 object-cover mb-3 rounded">
-              <h3 class="text-xl font-bold text-neon-green mb-2">${p.title}</h3>
-              <p class="text-gray-400">${p.description}</p>
-            </a>
-          `;
-          grid.appendChild(card);
+        
+        projects.forEach((project, index) => {
+          setTimeout(() => {
+            const card = document.createElement('div');
+            card.className = 'hack-card p-4 rounded';
+            card.innerHTML = `
+              <div class="terminal-prompt text-xs mb-2">project_${index + 1}.exe</div>
+              <a href="${project.url}" target="_blank" class="block">
+                <img src="${project.image}" alt="${project.title}" class="w-full h-32 object-cover mb-3 rounded border border-terminal-green">
+                <h3 class="text-terminal-green font-bold mb-1">${project.title}</h3>
+                <p class="text-gray-400 text-sm">${project.description}</p>
+                <div class="mt-2 text-xs text-terminal-blue">$ ./execute --run</div>
+              </a>
+            `;
+            grid.appendChild(card);
+          }, index * 200);
         });
+        
+        setTimeout(() => {
+          document.getElementById('project-count').textContent = projects.length;
+        }, projects.length * 200 + 100);
+        
       } catch (e) {
-        console.error("Gagal load projects.json:", e);
+        console.error('Failed to load projects:', e);
+        grid.innerHTML = '<div class="text-red-500">Error loading projects database...</div>';
       }
     }
+
+    function startTerminalEffects() {
+      // Random glitch effects
+      setInterval(() => {
+        if (Math.random() < 0.1) {
+          document.body.classList.add('glitch-effect');
+          setTimeout(() => {
+            document.body.classList.remove('glitch-effect');
+          }, 100);
+        }
+      }, 2000);
+      
+      // System status updates
+      const statusMessages = [
+        'System monitoring: OK',
+        'Network status: CONNECTED',
+        'Security scan: CLEAN',
+        'Memory usage: 23%',
+        'CPU load: OPTIMAL'
+      ];
+      
+      setInterval(() => {
+        if (Math.random() < 0.3) {
+          console.log('[SYSTEM] ' + statusMessages[Math.floor(Math.random() * statusMessages.length)]);
+        }
+      }, 5000);
+    }
+
+    // Easter egg: Konami code
+    let konamiCode = [38,38,40,40,37,39,37,39,66,65];
+    let konamiIndex = 0;
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          alert('🔓 CHEAT CODE ACTIVATED! Extra coffee mode enabled ☕');
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
   </script>
-
-  
-
 </body>
 </html>
