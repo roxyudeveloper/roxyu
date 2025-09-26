@@ -186,7 +186,7 @@
       box-shadow: 0 5px 25px rgba(0, 255, 65, 0.4);
     }
 
-    .saweria-terminal {
+    .donation-terminal {
       background: #0C0C0C;
       border: 1px solid #00FF41;
       border-radius: 4px;
@@ -195,7 +195,7 @@
       position: relative;
     }
 
-    .saweria-terminal::before {
+    .donation-terminal::before {
       content: '> DONATION_PROTOCOL_INITIATED...';
       position: absolute;
       top: -12px;
@@ -253,6 +253,20 @@
       background: #00FF41;
       animation: blink 2s infinite;
     }
+
+    .donation-card {
+      background: #0C0C0C;
+      border: 1px solid #00FF41;
+      border-radius: 4px;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .donation-card:hover {
+      border-color: #00FFFF;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body class="bg-dark-bg text-terminal-green overflow-x-hidden">
@@ -309,7 +323,7 @@
           <a href="#about" class="terminal-prompt hover:text-terminal-blue transition-colors">[ABOUT]</a>
           <a href="#projects" class="terminal-prompt hover:text-terminal-blue transition-colors">[PROJECTS]</a>
           <a href="#contact" class="terminal-prompt hover:text-terminal-blue transition-colors">[CONTACT]</a>
-          <a href="#saweria" class="terminal-prompt hover:text-terminal-blue transition-colors">[DONATE]</a>
+          <a href="#donate" class="terminal-prompt hover:text-terminal-blue transition-colors">[DONATE]</a>
         </div>
       </div>
     </div>
@@ -341,40 +355,112 @@
       </div>
     </div>
 
-    <!-- Saweria Donation Section -->
-    <div id="saweria" class="terminal-window mb-6">
+    <!-- Donation Section -->
+    <div id="donate" class="terminal-window mb-6">
       <div class="terminal-header">
         <span class="text-xs">DONATION_PROTOCOL.EXE</span>
       </div>
       <div class="p-4">
-        <div class="saweria-terminal">
+        <div class="donation-terminal">
           <div class="space-y-3">
-            <div class="terminal-prompt">$ ./support_developer --platform=saweria</div>
+            <div class="terminal-prompt">$ ./support_developer --initialize</div>
             <div class="pl-4">
-              <div class="text-terminal-blue">Initializing donation gateway...</div>
+              <div class="text-terminal-blue">Initializing donation gateways...</div>
               <div class="loading-bar">
                 <div class="loading-progress"></div>
               </div>
-              <div class="text-terminal-green">✓ Connection established</div>
+              <div class="text-terminal-green">✓ Multiple payment methods available</div>
             </div>
             
-            <div class="bg-black p-3 border border-terminal-green rounded">
-              <div class="text-terminal-yellow mb-2">🔥 SAWER DIKIT BIAR MIMIN MAKIN SEMANGAT NGODING!</div>
-              <div class="flex items-center space-x-2 mb-2">
-                <span class="terminal-prompt">URL:</span>
-                <a href="https://saweria.co/roxyudeveloper" target="_blank" 
-                   class="text-terminal-blue underline hover:text-terminal-yellow transition-colors">
-                  saweria.co/roxyudeveloper
-                </a>
+            <div class="text-terminal-yellow mb-4 text-center">🔥 SAWER DIKIT BIAR MIMIN MAKIN SEMANGAT NGODING!</div>
+            
+            <!-- Donation Options Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- Saweria Card -->
+              <div class="donation-card">
+                <div class="flex items-center space-x-3 mb-3">
+                  <div class="w-8 h-8 bg-terminal-green rounded flex items-center justify-center text-black font-bold">S</div>
+                  <div>
+                    <div class="text-terminal-green font-bold">SAWERIA</div>
+                    <div class="text-xs text-gray-400">Indonesian Payment Gateway</div>
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <div class="flex items-center space-x-2">
+                    <span class="terminal-prompt text-xs">URL:</span>
+                    <a href="https://saweria.co/roxyudeveloper" target="_blank" 
+                       class="text-terminal-blue underline hover:text-terminal-yellow transition-colors text-sm">
+                      saweria.co/roxyudeveloper
+                    </a>
+                  </div>
+                  
+                  <div class="text-xs text-gray-400 space-y-1">
+                    <div>• Bank Transfer, E-wallet, QRIS</div>
+                    <div>• No minimum donation</div>
+                    <div>• Instant notification</div>
+                  </div>
+                  
+                  <a href="https://saweria.co/roxyudeveloper" target="_blank" 
+                     class="block w-full bg-terminal-green text-black text-center py-2 rounded hover:bg-terminal-blue transition-colors text-sm font-bold">
+                    $ SAWER_NOW
+                  </a>
+                </div>
               </div>
-              <div class="text-xs text-gray-400">
-                > Direct transfer to developer wallet<br/>
-                > No minimum donation required<br/>
-                > Every coffee counts! ☕
+
+              <!-- Buy Me a Coffee Card -->
+              <div class="donation-card">
+                <div class="flex items-center space-x-3 mb-3">
+                  <div class="w-8 h-8 bg-terminal-yellow rounded flex items-center justify-center">☕</div>
+                  <div>
+                    <div class="text-terminal-yellow font-bold">BUY ME A COFFEE</div>
+                    <div class="text-xs text-gray-400">Global Payment Platform</div>
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <div class="flex items-center space-x-2">
+                    <span class="terminal-prompt text-xs">URL:</span>
+                    <a href="https://buymeacoffee.com/roxyudeveloper" target="_blank" 
+                       class="text-terminal-blue underline hover:text-terminal-yellow transition-colors text-sm">
+                      buymeacoffee.com/roxyudeveloper
+                    </a>
+                  </div>
+                  
+                  <div class="text-xs text-gray-400 space-y-1">
+                    <div>• Credit Card, PayPal, Stripe</div>
+                    <div>• International payments</div>
+                    <div>• Coffee-themed donations</div>
+                  </div>
+                  
+                  <a href="https://buymeacoffee.com/roxyudeveloper" target="_blank" 
+                     class="block w-full bg-terminal-yellow text-black text-center py-2 rounded hover:bg-terminal-blue hover:text-white transition-colors text-sm font-bold">
+                     ☕ BUY_COFFEE
+                  </a>
+                </div>
               </div>
             </div>
             
-            <div class="terminal-prompt text-xs">$ donation_status: <span class="text-terminal-green">ACTIVE</span></div>
+            <!-- Status Info -->
+            <div class="bg-black p-3 border border-terminal-green rounded mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <div class="terminal-prompt">PAYMENT_STATUS:</div>
+                  <div class="text-terminal-green">✓ ACTIVE</div>
+                </div>
+                <div>
+                  <div class="terminal-prompt">RESPONSE_TIME:</div>
+                  <div class="text-terminal-blue">~24 hours</div>
+                </div>
+                <div>
+                  <div class="terminal-prompt">COFFEE_COUNTER:</div>
+                  <div class="text-terminal-yellow" id="coffee-counter">Loading...</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="terminal-prompt text-xs text-center">$ donation_protocols: <span class="text-terminal-green">2 ACTIVE</span></div>
           </div>
         </div>
       </div>
@@ -456,8 +542,7 @@
  ***    *                                                                      **                                                             ****   ***    i 
   ******                                                                        **                                                          *******  **     o 
     ***                                                                                                                                    *     ****       n 
-                                                                                                                                                                                                                                                                                    ";
-    `;
+                                                                                                                                                                                                                                                                                    `;
 
     // Boot sequence
     let bootComplete = false;
@@ -483,6 +568,9 @@
       
       // Terminal typing effect
       startTerminalEffects();
+      
+      // Coffee counter animation
+      animateCoffeeCounter();
     }
 
     function createMatrixRain() {
@@ -498,6 +586,22 @@
         char.style.animationDuration = (8 + Math.random() * 4) + 's';
         container.appendChild(char);
       }
+    }
+
+    function animateCoffeeCounter() {
+      let count = 0;
+      const target = Math.floor(Math.random() * 50) + 25; // Random number between 25-74
+      const counter = document.getElementById('coffee-counter');
+      
+      const interval = setInterval(() => {
+        counter.textContent = count + ' ☕';
+        count++;
+        
+        if (count >= target) {
+          clearInterval(interval);
+          counter.textContent = target + ' ☕ & counting...';
+        }
+      }, 100);
     }
 
     async function loadProjects() {
@@ -574,6 +678,20 @@
       } else {
         konamiIndex = 0;
       }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
   </script>
 </body>
