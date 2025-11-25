@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roxyu Developer - Terminal</title>
+  <title>Roxyu Developer - Pengembangan Expert Advisor</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -18,11 +18,12 @@
             'terminal-blue': '#00FFFF',
             'dark-bg': '#000000',
             'terminal-bg': '#0C0C0C',
+            'card-bg': '#1a1a1a',
           },
           animation: {
             'blink': 'blink 1s step-end infinite',
-            'glitch': 'glitch 2s infinite',
-            'scan': 'scan 2s linear infinite',
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
           }
         }
       }
@@ -41,18 +42,14 @@
       51%, 100% { opacity: 0; }
     }
 
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(-2px, -2px); }
-      60% { transform: translate(2px, 2px); }
-      80% { transform: translate(2px, -2px); }
-      100% { transform: translate(0); }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    @keyframes scan {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100vh); }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .terminal-cursor::after {
@@ -60,90 +57,26 @@
       animation: blink 1s step-end infinite;
     }
 
-    .glitch-effect {
-      animation: glitch 0.3s, blur 0.3s, hue 0.3s;
-      animation-iteration-count: infinite;
-      animation-direction: alternate-reverse;
-    }
-
-    .scan-line {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #00FF41, transparent);
-      animation: scan 3s linear infinite;
-      z-index: 1000;
-    }
-
-    .matrix-rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.1;
-    }
-
-    .matrix-char {
-      position: absolute;
-      color: #00FF41;
-      font-size: 12px;
-      animation: matrix-fall 8s linear infinite;
-    }
-
-    @keyframes matrix-fall {
-      0% { transform: translateY(-100vh); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-
-    .boot-sequence {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 2rem;
-      color: #00FF41;
-    }
-
-    .boot-text {
-      margin: 2px 0;
-      font-size: 14px;
-    }
-
-    .ascii-art {
-      font-size: 8px;
-      line-height: 1;
-      color: #00FF41;
-      white-space: pre;
-      text-align: center;
-      margin: 2rem 0;
-    }
-
     .terminal-window {
       background: #0C0C0C;
       border: 1px solid #00FF41;
-      border-radius: 4px;
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .terminal-window:hover {
+      box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
     }
 
     .terminal-header {
       background: #1a1a1a;
-      padding: 8px 12px;
+      padding: 10px 15px;
       border-bottom: 1px solid #00FF41;
       display: flex;
       align-items: center;
       gap: 8px;
+      border-radius: 8px 8px 0 0;
     }
 
     .terminal-dot {
@@ -156,93 +89,38 @@
     .dot-yellow { background: #FFBD2E; }
     .dot-green { background: #27CA3F; }
 
-    .hack-card {
-      background: #0C0C0C;
+    .project-card {
+      background: #1a1a1a;
       border: 1px solid #00FF41;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
-    .hack-card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #00FF41, transparent, #00FF41);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s;
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 255, 65, 0.3);
+      border-color: #00FFFF;
     }
 
-    .hack-card:hover::before {
-      opacity: 1;
-    }
-
-    .hack-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 25px rgba(0, 255, 65, 0.4);
-    }
-
-    .donation-terminal {
-      background: #0C0C0C;
-      border: 1px solid #00FF41;
-      border-radius: 4px;
-      padding: 1rem;
-      margin: 1rem 0;
-      position: relative;
-    }
-
-    .donation-terminal::before {
-      content: '> DONATION_PROTOCOL_INITIATED...';
-      position: absolute;
-      top: -12px;
-      left: 12px;
-      background: #0C0C0C;
-      padding: 0 8px;
-      color: #00FF41;
-      font-size: 12px;
-    }
-
-    .loading-bar {
+    .project-image {
       width: 100%;
-      height: 4px;
-      background: #1a1a1a;
-      border-radius: 2px;
-      overflow: hidden;
-      margin: 8px 0;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #00FF41;
+      transition: transform 0.3s ease;
     }
 
-    .loading-progress {
-      height: 100%;
-      background: linear-gradient(90deg, #00FF41, #00FFFF);
-      animation: loading 2s ease-in-out infinite;
-    }
-
-    @keyframes loading {
-      0% { width: 0%; }
-      50% { width: 70%; }
-      100% { width: 100%; }
-    }
-
-    .terminal-prompt {
-      color: #00FF41;
-    }
-
-    .terminal-input {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #00FF41;
-      width: 100%;
+    .project-card:hover .project-image {
+      transform: scale(1.05);
     }
 
     .status-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       font-size: 12px;
     }
 
@@ -254,445 +132,582 @@
       animation: blink 2s infinite;
     }
 
-    .donation-card {
-      background: #0C0C0C;
-      border: 1px solid #00FF41;
-      border-radius: 4px;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      transition: all 0.3s ease;
+    .section-title {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
     }
 
-    .donation-card:hover {
-      border-color: #00FFFF;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #00FF41, transparent);
+    }
+
+    .floating-nav {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #00FF41;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-dot.active {
+      opacity: 1;
+      transform: scale(1.2);
+      box-shadow: 0 0 10px #00FF41;
+    }
+
+    .nav-dot:hover {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #00FF41;
+      color: #000;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+    }
+
+    .back-to-top:hover {
+      background: #00FFFF;
+      transform: translateY(-3px);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #0C0C0C;
+      border: 2px solid #00FF41;
+      border-radius: 8px;
+      max-width: 90%;
+      max-height: 90%;
+      overflow: auto;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0, 255, 65, 0.4);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #FF0000;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: #FFFF00;
+      color: black;
+    }
+
+    .modal-image {
+      width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+      .floating-nav {
+        display: none;
+      }
     }
   </style>
 </head>
 <body class="bg-dark-bg text-terminal-green overflow-x-hidden">
 
-  <!-- Boot Sequence -->
-  <div id="boot-sequence" class="boot-sequence">
-    <div class="boot-text">ROXYU_TERMINAL v2.1.337 booting...</div>
-    <div class="boot-text">Loading kernel modules... [OK]</div>
-    <div class="boot-text">Initializing HC protocols... [OK]</div>
-    <div class="boot-text">Establishing secure connection... [OK]</div>
-    <div class="boot-text">Loading SQL... [OK]</div>
-    <div class="boot-text">System ready. Welcome, user.</div>
-    <div class="loading-bar">
-      <div class="loading-progress"></div>
+  <!-- Floating Navigation -->
+  <div class="floating-nav">
+    <div class="nav-dot active" data-section="hero"></div>
+    <div class="nav-dot" data-section="about"></div>
+    <div class="nav-dot" data-section="portfolio"></div>
+    <div class="nav-dot" data-section="donate"></div>
+    <div class="nav-dot" data-section="contact"></div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">↑</div>
+
+  <!-- Image Modal -->
+  <div class="modal" id="imageModal">
+    <div class="modal-content">
+      <div class="modal-close" id="modalClose">&times;</div>
+      <img id="modalImage" class="modal-image" src="" alt="Project Preview">
+      <div class="p-5 text-center border-t border-terminal-green">
+        <a id="downloadLink" href="#" target="_blank" class="bg-terminal-green text-black px-6 py-2 rounded hover:bg-terminal-blue transition-colors font-bold inline-block">
+          📥 DOWNLOAD
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Scan Line Effect -->
-  <div class="scan-line"></div>
-
-  <!-- Matrix Rain -->
-  <div id="matrix-rain" class="matrix-rain"></div>
-
   <!-- Main Terminal -->
-  <div class="relative z-10 min-h-screen p-4">
-    <!-- Terminal Header -->
-    <div class="terminal-window mb-4">
-      <div class="terminal-header">
-        <div class="terminal-dot dot-red"></div>
-        <div class="terminal-dot dot-yellow"></div>
-        <div class="terminal-dot dot-green"></div>
-        <span class="text-xs text-gray-400">roxyu@terminal:~$</span>
-        <div class="status-indicator ml-auto">
-          <div class="status-dot"></div>
-          <span class="text-terminal-green">ONLINE</span>
+  <div class="relative z-10 min-h-screen p-4 max-w-6xl mx-auto">
+    
+    <!-- Hero Section -->
+    <section id="hero" class="mb-8">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+          <span class="text-xs text-gray-400">ea_developer@terminal:~$</span>
+          <div class="status-indicator ml-auto">
+            <div class="status-dot"></div>
+            <span class="text-terminal-green">ONLINE</span>
+          </div>
+        </div>
+        
+        <div class="p-6 text-center">
+          <div class="text-terminal-green text-2xl font-bold mb-2">EA DEVELOPER</div>
+          <div class="text-terminal-blue text-lg mb-4 terminal-cursor">Spesialis Pengembangan Expert Advisor untuk Forex & Crypto</div>
+          <div class="text-gray-400 text-sm max-w-2xl mx-auto">
+            Mengembangkan Expert Advisor yang powerful, reliable, dan menguntungkan. 
+            Setiap EA dirancang dengan strategi yang telah diuji dan optimasi maksimal.
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-4 mt-6">
+            <a href="#portfolio" class="bg-terminal-green text-black px-4 py-2 rounded hover:bg-terminal-blue transition-colors font-medium">
+              Lihat Portfolio
+            </a>
+            <a href="#contact" class="border border-terminal-green text-terminal-green px-4 py-2 rounded hover:bg-terminal-green hover:text-black transition-colors">
+              Hubungi Saya
+            </a>
+          </div>
         </div>
       </div>
-      
-      <!-- ASCII Elephant Art -->
-      <div class="p-4 text-center">
-        <pre class="ascii-art" id="elephant-art"></pre>
-        <div class="text-terminal-green text-lg mb-2">ROXYU DEVELOPER</div>
-        <div class="text-terminal-blue text-sm terminal-cursor">Playground</div>
-      </div>
-    </div>
-
-    <!-- Navigation -->
-    <div class="terminal-window mb-6">
-      <div class="terminal-header">
-        <span class="text-xs">NAVIGATION_MODULE</span>
-      </div>
-      <div class="p-4">
-        <div class="flex flex-wrap gap-4">
-          <a href="#about" class="terminal-prompt hover:text-terminal-blue transition-colors">[ABOUT]</a>
-          <a href="#projects" class="terminal-prompt hover:text-terminal-blue transition-colors">[PROJECTS]</a>
-          <a href="#contact" class="terminal-prompt hover:text-terminal-blue transition-colors">[CONTACT]</a>
-          <a href="#donate" class="terminal-prompt hover:text-terminal-blue transition-colors">[DONATE]</a>
-        </div>
-      </div>
-    </div>
+    </section>
 
     <!-- About Section -->
-    <div id="about" class="terminal-window mb-6">
-      <div class="terminal-header">
-        <span class="text-xs">ABOUT.LOG</span>
-      </div>
-      <div class="p-4">
-        <div class="space-y-2 text-sm">
-          <div class="terminal-prompt">$ cat developer_profile.txt</div>
-          <div class="pl-4">
-            <div>> Nama: Roxyu Developer</div>
-            <div>> Status: Active Coding Session</div>
-            <div>> Specialization: Applications, Software & Tools</div>
-            <div>> Philosophy: Function over form, elegant solutions</div>
-            <div>> Motto: "Buat yang bisa dipakai, bukan yang cuma bagus dilihat"</div>
-          </div>
-          <div class="mt-4">
-            <div class="terminal-prompt">$ echo "mission_statement"</div>
-            <div class="pl-4 text-terminal-blue">
-              "Gue bikin software karena bisa, dan karena ada yang butuh.<br/>
-              Nggak usah ribet, yang penting jalan dan solve problem.<br/>
-              Ada request? Shoot. Bisa dikerjain? Let's go. 🔥"
+    <section id="about" class="mb-8">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="text-xs">ABOUT.LOG</span>
+        </div>
+        <div class="p-5">
+          <h2 class="section-title text-xl font-bold">Tentang Saya</h2>
+          <div class="space-y-4 text-sm">
+            <div class="flex items-start">
+              <span class="terminal-prompt mr-2">$</span>
+              <div>
+                <div class="text-terminal-blue">Spesialisasi: Expert Advisor Development (MT4, MT5)</div>
+                <div class="text-terminal-blue">Fokus: Strategi Forex & Cryptocurrency Automated Trading</div>
+                <div class="text-terminal-blue mt-2">Filosofi: Backtest Solid → Live Testing → Production Ready</div>
+                <div class="text-terminal-yellow mt-2">"Tidak hanya EA yang berjalan, tapi EA yang menguntungkan"</div>
+              </div>
+            </div>
+            
+            <div class="mt-4">
+              <div class="terminal-prompt">Keahlian:</div>
+              <div class="pl-4 text-terminal-green mt-2 space-y-2">
+                <div>• Pengembangan EA dengan MQL4 & MQL5</div>
+                <div>• Strategi Trading Automation (Trend Following, Grid, Martingale, dll)</div>
+                <div>• Backtesting & Optimization untuk performa maksimal</div>
+                <div>• Risk Management & Position Sizing</div>
+                <div>• Integration dengan berbagai Broker & API</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="mb-8">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="text-xs">PORTFOLIO_DATABASE.JSON</span>
+        </div>
+        <div class="p-5">
+          <h2 class="section-title text-xl font-bold mb-4">Portfolio Proyek EA</h2>
+          <div class="terminal-prompt mb-4">$ SELECT * FROM portfolio WHERE status='READY';</div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="portfolio-grid">
+            <div class="text-center py-10">
+              <div class="text-terminal-blue animate-pulse">Loading portfolio...</div>
+            </div>
+          </div>
+          
+          <div class="terminal-prompt text-xs mt-4">
+            Query executed successfully. <span id="project-count">0</span> projects loaded.
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Donation Section -->
-    <div id="donate" class="terminal-window mb-6">
-      <div class="terminal-header">
-        <span class="text-xs">DONATION_PROTOCOL.EXE</span>
-      </div>
-      <div class="p-4">
-        <div class="donation-terminal">
-          <div class="space-y-3">
-            <div class="terminal-prompt">$ ./support_developer --initialize</div>
-            <div class="pl-4">
-              <div class="text-terminal-blue">Initializing donation gateways...</div>
-              <div class="loading-bar">
-                <div class="loading-progress"></div>
-              </div>
-              <div class="text-terminal-green">✓ Multiple payment methods available</div>
+    <section id="donate" class="mb-8">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="text-xs">DONATION_PROTOCOL.EXE</span>
+        </div>
+        <div class="p-5">
+          <h2 class="section-title text-xl font-bold mb-4">Dukung Pengembangan</h2>
+          
+          <div class="bg-card-bg border border-terminal-green rounded-lg p-5">
+            <div class="terminal-prompt mb-3">$ ./support_ea_dev --initialize</div>
+            <div class="text-terminal-yellow text-center my-4 font-medium">
+              🔥 DUKUNG PENGEMBANGAN EA LEBIH BAIK!
             </div>
             
-            <div class="text-terminal-yellow mb-4 text-center">🔥 SAWER DIKIT BIAR MIMIN MAKIN SEMANGAT NGODING!</div>
-            
-            <!-- Donation Options Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <!-- Saweria Card -->
-              <div class="donation-card">
+              <div class="project-card p-4">
                 <div class="flex items-center space-x-3 mb-3">
-                  <div class="w-8 h-8 bg-terminal-green rounded flex items-center justify-center text-black font-bold">S</div>
+                  <div class="w-10 h-10 bg-terminal-green rounded flex items-center justify-center text-black font-bold">S</div>
                   <div>
                     <div class="text-terminal-green font-bold">SAWERIA</div>
-                    <div class="text-xs text-gray-400">Indonesian Payment Gateway</div>
+                    <div class="text-xs text-gray-400">Gateway Pembayaran Indonesia</div>
                   </div>
                 </div>
                 
-                <div class="space-y-2">
-                  <div class="flex items-center space-x-2">
-                    <span class="terminal-prompt text-xs">URL:</span>
-                    <a href="https://saweria.co/roxyudeveloper" target="_blank" 
-                       class="text-terminal-blue underline hover:text-terminal-yellow transition-colors text-sm">
-                      saweria.co/roxyudeveloper
-                    </a>
-                  </div>
-                  
+                <div class="space-y-3">
                   <div class="text-xs text-gray-400 space-y-1">
-                    <div>• Bank Transfer, E-wallet, QRIS</div>
-                    <div>• No minimum donation</div>
-                    <div>• Instant notification</div>
+                    <div>• Transfer Bank, E-wallet, QRIS</div>
+                    <div>• Tidak ada minimum donasi</div>
+                    <div>• Notifikasi real-time</div>
                   </div>
                   
                   <a href="https://saweria.co/roxyudeveloper" target="_blank" 
-                     class="block w-full bg-terminal-green text-black text-center py-2 rounded hover:bg-terminal-blue transition-colors text-sm font-bold">
-                    $ SAWER_NOW
+                     class="block w-full bg-terminal-green text-black text-center py-2 rounded hover:bg-terminal-blue transition-colors font-bold">
+                    $ DONASI_SEKARANG
                   </a>
                 </div>
               </div>
 
               <!-- Buy Me a Coffee Card -->
-              <div class="donation-card">
+              <div class="project-card p-4">
                 <div class="flex items-center space-x-3 mb-3">
-                  <div class="w-8 h-8 bg-terminal-yellow rounded flex items-center justify-center">☕</div>
+                  <div class="w-10 h-10 bg-terminal-yellow rounded flex items-center justify-center text-black">☕</div>
                   <div>
                     <div class="text-terminal-yellow font-bold">BUY ME A COFFEE</div>
-                    <div class="text-xs text-gray-400">Global Payment Platform</div>
+                    <div class="text-xs text-gray-400">Platform Global</div>
                   </div>
                 </div>
                 
-                <div class="space-y-2">
-                  <div class="flex items-center space-x-2">
-                    <span class="terminal-prompt text-xs">URL:</span>
-                    <a href="https://buymeacoffee.com/roxyudeveloper" target="_blank" 
-                       class="text-terminal-blue underline hover:text-terminal-yellow transition-colors text-sm">
-                      buymeacoffee.com/roxyudeveloper
-                    </a>
-                  </div>
-                  
+                <div class="space-y-3">
                   <div class="text-xs text-gray-400 space-y-1">
-                    <div>• Credit Card, PayPal, Stripe</div>
-                    <div>• International payments</div>
-                    <div>• Coffee-themed donations</div>
+                    <div>• Kartu Kredit, PayPal, Stripe</div>
+                    <div>• Pembayaran internasional</div>
+                    <div>• Dukungan pembayaran global</div>
                   </div>
                   
                   <a href="https://buymeacoffee.com/roxyudeveloper" target="_blank" 
-                     class="block w-full bg-terminal-yellow text-black text-center py-2 rounded hover:bg-terminal-blue hover:text-white transition-colors text-sm font-bold">
-                     ☕ BUY_COFFEE
+                     class="block w-full bg-terminal-yellow text-black text-center py-2 rounded hover:bg-terminal-blue hover:text-white transition-colors font-bold">
+                    ☕ BELI_KOPI
                   </a>
                 </div>
               </div>
             </div>
-            
-            <!-- Status Info -->
-            <div class="bg-black p-3 border border-terminal-green rounded mt-4">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div>
-                  <div class="terminal-prompt">PAYMENT_STATUS:</div>
-                  <div class="text-terminal-green">✓ ACTIVE</div>
-                </div>
-                <div>
-                  <div class="terminal-prompt">RESPONSE_TIME:</div>
-                  <div class="text-terminal-blue">~24 hours</div>
-                </div>
-                <div>
-                  <div class="terminal-prompt">COFFEE_COUNTER:</div>
-                  <div class="text-terminal-yellow" id="coffee-counter">Loading...</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="terminal-prompt text-xs text-center">$ donation_protocols: <span class="text-terminal-green">2 ACTIVE</span></div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Projects Section -->
-    <div id="projects" class="terminal-window mb-6">
-      <div class="terminal-header">
-        <span class="text-xs">PROJECT_DATABASE.SQL</span>
-      </div>
-      <div class="p-4">
-        <div class="terminal-prompt mb-4">$ SELECT * FROM projects WHERE status='ACTIVE';</div>
-        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-        <div class="terminal-prompt text-xs mt-4">Query executed successfully. <span id="project-count">0</span> rows returned.</div>
-      </div>
-    </div>
+    </section>
 
     <!-- Contact Section -->
-    <div id="contact" class="terminal-window mb-6">
-      <div class="terminal-header">
-        <span class="text-xs">CONTACT_INTERFACE</span>
-      </div>
-      <div class="p-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <div class="terminal-prompt mb-4">$ cat contact_info.conf</div>
-            <div class="space-y-2 text-sm pl-4">
-              <div>> Email: <span class="text-terminal-blue">roxyudeveloper@gmail.com</span></div>
-              <div>> TikTok: <a href="https://tiktok.com/@souueei" class="text-terminal-blue hover:text-terminal-yellow">@souueei</a></div>
-              <div>> Status: <span class="text-terminal-green">Available for projects</span></div>
-              <div>> Response Time: <span class="text-terminal-yellow">~24 hours</span></div>
+    <section id="contact" class="mb-8">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="text-xs">CONTACT_INTERFACE</span>
+        </div>
+        <div class="p-5">
+          <h2 class="section-title text-xl font-bold mb-4">Hubungi Saya</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div class="terminal-prompt mb-4">$ cat contact_info.conf</div>
+              <div class="space-y-3 text-sm pl-4">
+                <div class="flex items-center">
+                  <span class="terminal-prompt mr-2">></span>
+                  <span>Email: <a href="mailto:roxyudeveloper@gmail.com" class="text-terminal-blue hover:text-terminal-yellow">roxyudeveloper@gmail.com</a></span>
+                </div>
+                <div class="flex items-center">
+                  <span class="terminal-prompt mr-2">></span>
+                  <span>TikTok: <a href="https://tiktok.com/@souueei" target="_blank" class="text-terminal-blue hover:text-terminal-yellow">@souueei</a></span>
+                </div>
+                <div class="flex items-center">
+                  <span class="terminal-prompt mr-2">></span>
+                  <span>Status: <span class="text-terminal-green">Tersedia untuk proyek custom</span></span>
+                </div>
+                <div class="flex items-center">
+                  <span class="terminal-prompt mr-2">></span>
+                  <span>Respon: <span class="text-terminal-yellow">~24 jam</span></span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <div class="terminal-prompt mb-4">$ nano quick_message.txt</div>
-            <form class="space-y-3">
-              <div class="flex">
-                <span class="terminal-prompt mr-2">Name:</span>
-                <input type="text" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1">
-              </div>
-              <div class="flex">
-                <span class="terminal-prompt mr-2">Email:</span>
-                <input type="email" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1">
-              </div>
-              <div class="flex">
-                <span class="terminal-prompt mr-2">Msg:</span>
-                <textarea rows="3" class="terminal-input flex-1 bg-gray-900 border border-terminal-green rounded px-2 py-1 resize-none"></textarea>
-              </div>
-              <button type="submit" class="bg-terminal-green text-black px-4 py-1 rounded hover:bg-terminal-blue transition-colors">
-                $ SEND_MESSAGE
-              </button>
-            </form>
+            <div>
+              <div class="terminal-prompt mb-4">$ nano quick_message.txt</div>
+              <form class="space-y-4" id="contact-form">
+                <div>
+                  <label class="block text-sm mb-1">Nama:</label>
+                  <input type="text" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green" required>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1">Email:</label>
+                  <input type="email" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green" required>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1">Pesan:</label>
+                  <textarea rows="4" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green resize-none" required></textarea>
+                </div>
+                <button type="submit" class="bg-terminal-green text-black px-4 py-2 rounded hover:bg-terminal-blue transition-colors font-medium w-full">
+                  $ KIRIM_PESAN
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-gray-500 text-sm py-6 border-t border-terminal-green/20">
+      <div class="terminal-prompt">Roxyu Developer &copy; 2024 - Dikembangkan dengan ❤️ dan ☕</div>
+      <div class="mt-2 text-xs">System Status: <span class="text-terminal-green">OPERATIONAL</span></div>
+    </footer>
   </div>
 
   <script>
-    // ASCII Elephant Art
-    const elephantArt = `
-                                                                                                                                                              
-        ***** **                           ***                                                            *                                                   
-     ******  ****                           ***                                                         **                                                    
-    **   *  *  ***                           **                                                         **                                                    
-   *    *  *    ***                          **                                                         **                                                    
-       *  *      **           ***  ****      **    **   ****                      ****                  **                                                    
-      ** **      **    ***     **** **** *   **     **    ***  *       ****      * ***  *    ****       ** ****       ****    ***  ****        ****           
-      ** **      **   * ***     **   ****    **     **     ****       * ***  *  *   ****    * ***  *    *** ***  *   * ***  *  **** **** *    *  ***  *       
-    **** **      *   *   ***    **           **     **      **       *   ****  **    **    *   ****     **   ****   *   ****    **   ****    *    ****        
-   * *** **     *   **    ***   **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
-      ** *******    ********    **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
-      ** ******     *******     **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **         
-      ** **         **          **           **     **      **      **    **   **    **   **    **      **    **   **    **     **    **    **     **       q 
-      ** **         ****    *   ***          **      ******* **     **    **   *******    **    **      **    **   **    **     **    **    **     **       u 
-      ** **          *******     ***         *** *    *****   **     ***** **  ******      ***** **      *****      ***** **    ***   ***    ********       e 
- **   ** **           *****                   ***                     ***   ** **           ***   **      ***        ***   **    ***   ***     *** ***      s 
-***   *  *                                                                     **                                                                   ***     t 
- ***    *                                                                      **                                                             ****   ***    i 
-  ******                                                                        **                                                          *******  **     o 
-    ***                                                                                                                                    *     ****       n 
-                                                                                                                                                                                                                                                                                    `;
-
-    // Boot sequence
-    let bootComplete = false;
-    
-    setTimeout(() => {
-      document.getElementById('boot-sequence').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('boot-sequence').style.display = 'none';
-        bootComplete = true;
-        initializeEffects();
-      }, 500);
-    }, 4000);
-
-    function initializeEffects() {
-      // Set elephant art
-      document.getElementById('elephant-art').textContent = elephantArt;
-      
-      // Matrix rain
-      createMatrixRain();
-      
-      // Load projects
-      loadProjects();
-      
-      // Terminal typing effect
-      startTerminalEffects();
-      
-      // Coffee counter animation
-      animateCoffeeCounter();
-    }
-
-    function createMatrixRain() {
-      const container = document.getElementById('matrix-rain');
-      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-      
-      for (let i = 0; i < 50; i++) {
-        const char = document.createElement('div');
-        char.className = 'matrix-char';
-        char.textContent = chars[Math.floor(Math.random() * chars.length)];
-        char.style.left = Math.random() * window.innerWidth + 'px';
-        char.style.animationDelay = Math.random() * 8 + 's';
-        char.style.animationDuration = (8 + Math.random() * 4) + 's';
-        container.appendChild(char);
+    // Portfolio data JSON
+    const portfolioData = [
+      {
+        title: "BLACK TROJAN V101.1",
+        description: "STRATEGI INTI: MULTI-LAYER AVERAGING ",
+        image: "assets/img/blacktrojan.jpg",
+        downloadUrl: "https://pixeldrain.com/u/Yi8kACmR",
+        tags: ["MULTI-LAYER", "MT4", "High Win Rate"]
       }
-    }
+    ];
 
-    function animateCoffeeCounter() {
-      let count = 0;
-      const target = Math.floor(Math.random() * 50) + 25; // Random number between 25-74
-      const counter = document.getElementById('coffee-counter');
-      
-      const interval = setInterval(() => {
-        counter.textContent = count + ' ☕';
-        count++;
-        
-        if (count >= target) {
-          clearInterval(interval);
-          counter.textContent = target + ' ☕ & counting...';
-        }
-      }, 100);
-    }
-
-    async function loadProjects() {
-      const grid = document.getElementById('projects-grid');
-      try {
-        const res = await fetch('assets/project/projects.json');
-        const projects = await res.json();
-        
-        projects.forEach((project, index) => {
-          setTimeout(() => {
-            const card = document.createElement('div');
-            card.className = 'hack-card p-4 rounded';
-            card.innerHTML = `
-              <div class="terminal-prompt text-xs mb-2">project_${index + 1}.exe</div>
-              <a href="${project.url}" target="_blank" class="block">
-                <img src="${project.image}" alt="${project.title}" class="w-full h-32 object-cover mb-3 rounded border border-terminal-green">
-                <h3 class="text-terminal-green font-bold mb-1">${project.title}</h3>
-                <p class="text-gray-400 text-sm">${project.description}</p>
-                <div class="mt-2 text-xs text-terminal-blue">$ ./execute --run</div>
-              </a>
-            `;
-            grid.appendChild(card);
-          }, index * 200);
-        });
-        
-        setTimeout(() => {
-          document.getElementById('project-count').textContent = projects.length;
-        }, projects.length * 200 + 100);
-        
-      } catch (e) {
-        console.error('Failed to load projects:', e);
-        grid.innerHTML = '<div class="text-red-500">Error loading projects database...</div>';
-      }
-    }
-
-    function startTerminalEffects() {
-      // Random glitch effects
-      setInterval(() => {
-        if (Math.random() < 0.1) {
-          document.body.classList.add('glitch-effect');
-          setTimeout(() => {
-            document.body.classList.remove('glitch-effect');
-          }, 100);
-        }
-      }, 2000);
-      
-      // System status updates
-      const statusMessages = [
-        'System monitoring: OK',
-        'Network status: CONNECTED',
-        'Security scan: CLEAN',
-        'Memory usage: 23%',
-        'CPU load: OPTIMAL'
-      ];
-      
-      setInterval(() => {
-        if (Math.random() < 0.3) {
-          console.log('[SYSTEM] ' + statusMessages[Math.floor(Math.random() * statusMessages.length)]);
-        }
-      }, 5000);
-    }
-
-    // Easter egg: Konami code
-    let konamiCode = [38,38,40,40,37,39,37,39,66,65];
-    let konamiIndex = 0;
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.keyCode === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-          alert('🔓 CHEAT CODE ACTIVATED! Extra coffee mode enabled ☕');
-          konamiIndex = 0;
-        }
-      } else {
-        konamiIndex = 0;
-      }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      loadPortfolio();
+      initNavigation();
+      initBackToTop();
+      initContactForm();
+      initModal();
     });
 
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+    function loadPortfolio() {
+      const grid = document.getElementById('portfolio-grid');
+      const countElement = document.getElementById('project-count');
+      
+      grid.innerHTML = '';
+      
+      portfolioData.forEach((project, index) => {
+        setTimeout(() => {
+          const card = document.createElement('div');
+          card.className = 'project-card p-4 rounded animate-fade-in';
+          card.style.animationDelay = `${index * 0.1}s`;
+          card.style.cursor = 'pointer';
+          
+          card.innerHTML = `
+            <div class="terminal-prompt text-xs mb-2">ea_${index + 1}.exe</div>
+            <img src="${project.image}" alt="${project.title}" class="project-image rounded mb-3">
+            <h3 class="text-terminal-green font-bold mb-2 text-sm">${project.title}</h3>
+            <p class="text-gray-400 text-xs mb-3">${project.description}</p>
+            <div class="flex flex-wrap gap-1 mb-3">
+              ${project.tags.map(tag => `<span class="bg-terminal-green/20 text-terminal-green text-xs px-2 py-1 rounded">${tag}</span>`).join('')}
+            </div>
+            <div class="text-xs text-terminal-blue">$ ./preview_ea --zoom</div>
+          `;
+          
+          card.addEventListener('click', () => openModal(project));
+          grid.appendChild(card);
+        }, index * 100);
+      });
+      
+      setTimeout(() => {
+        countElement.textContent = portfolioData.length;
+      }, portfolioData.length * 100 + 100);
+    }
+
+    function initModal() {
+      const modal = document.getElementById('imageModal');
+      const closeBtn = document.getElementById('modalClose');
+      
+      closeBtn.addEventListener('click', closeModal);
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
         }
       });
-    });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      });
+    }
+
+    function openModal(project) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const downloadLink = document.getElementById('downloadLink');
+      
+      modalImage.src = project.image;
+      modalImage.alt = project.title;
+      downloadLink.href = project.downloadUrl;
+      downloadLink.textContent = `DOWNLOAD - ${project.title}`;
+      
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('active');
+    }
+
+    function initNavigation() {
+      const navDots = document.querySelectorAll('.nav-dot');
+      const sections = document.querySelectorAll('section');
+      
+      window.addEventListener('scroll', function() {
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          
+          if (pageYOffset >= sectionTop - 100) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        navDots.forEach(dot => {
+          dot.classList.remove('active');
+          if (dot.getAttribute('data-section') === current) {
+            dot.classList.add('active');
+          }
+        });
+      });
+      
+      navDots.forEach(dot => {
+        dot.addEventListener('click', function() {
+          const sectionId = this.getAttribute('data-section');
+          const section = document.getElementById(sectionId);
+          
+          if (section) {
+            window.scrollTo({
+              top: section.offsetTop - 20,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    }
+
+    function initBackToTop() {
+      const backToTopBtn = document.getElementById('backToTop');
+      
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      });
+      
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    function initContactForm() {
+      const contactForm = document.getElementById('contact-form');
+      
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const inputs = contactForm.querySelectorAll('input, textarea');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = '#FF0000';
+          } else {
+            input.style.borderColor = '#00FF41';
+          }
+        });
+        
+        if (isValid) {
+          const submitBtn = contactForm.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          
+          submitBtn.textContent = 'MENGIRIM...';
+          submitBtn.disabled = true;
+          
+          setTimeout(() => {
+            alert('Pesan berhasil dikirim! Saya akan membalas dalam 24 jam.');
+            contactForm.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }, 1500);
+        } else {
+          alert('Harap isi semua field yang diperlukan.');
+        }
+      });
+    }
   </script>
-</body>
-</html>
