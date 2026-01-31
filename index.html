@@ -1,713 +1,1242 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roxyu Developer - Pengembangan Expert Advisor</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            'terminal-green': '#00FF41',
-            'terminal-red': '#FF0000',
-            'terminal-yellow': '#FFFF00',
-            'terminal-blue': '#00FFFF',
-            'dark-bg': '#000000',
-            'terminal-bg': '#0C0C0C',
-            'card-bg': '#1a1a1a',
-          },
-          animation: {
-            'blink': 'blink 1s step-end infinite',
-            'fade-in': 'fadeIn 0.5s ease-in-out',
-            'slide-up': 'slideUp 0.5s ease-out',
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roxyu Developer | Expert Advisor MT4/MT5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --accent-cyan: #00f0ff;
+            --accent-purple: #8b5cf6;
+            --accent-green: #00ff88;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --border-color: rgba(255,255,255,0.08);
+            --glow-cyan: 0 0 30px rgba(0,240,255,0.3);
+            --glow-purple: 0 0 30px rgba(139,92,246,0.3);
         }
-      }
-    }
-  </script>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap');
-    
-    * {
-      font-family: 'Fira Code', 'Courier New', monospace;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
 
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 4px;
+        }
 
-    .terminal-cursor::after {
-      content: '█';
-      animation: blink 1s step-end infinite;
-    }
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    .terminal-window {
-      background: #0C0C0C;
-      border: 1px solid #00FF41;
-      border-radius: 8px;
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-      transition: all 0.3s ease;
-    }
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-    .terminal-window:hover {
-      box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
-    }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+            opacity: 0.5;
+        }
 
-    .terminal-header {
-      background: #1a1a1a;
-      padding: 10px 15px;
-      border-bottom: 1px solid #00FF41;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 8px 8px 0 0;
-    }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
 
-    .terminal-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10,10,15,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    .dot-red { background: #FF5F56; }
-    .dot-yellow { background: #FFBD2E; }
-    .dot-green { background: #27CA3F; }
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .project-card {
-      background: #1a1a1a;
-      border: 1px solid #00FF41;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+        .logo span {
+            color: var(--accent-cyan);
+            -webkit-text-fill-color: var(--accent-cyan);
+        }
 
-    .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 255, 65, 0.3);
-      border-color: #00FFFF;
-    }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
 
-    .project-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-bottom: 1px solid #00FF41;
-      transition: transform 0.3s ease;
-    }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    .project-card:hover .project-image {
-      transform: scale(1.05);
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
 
-    .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-    }
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #00FF41;
-      animation: blink 2s infinite;
-    }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .section-title {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1.5rem;
-    }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
 
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, #00FF41, transparent);
-    }
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: all 0.3s ease;
+        }
 
-    .floating-nav {
-      position: fixed;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 120px 5% 80px;
+        }
 
-    .nav-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #00FF41;
-      opacity: 0.5;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
 
-    .nav-dot.active {
-      opacity: 1;
-      transform: scale(1.2);
-      box-shadow: 0 0 10px #00FF41;
-    }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
 
-    .nav-dot:hover {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0.4); }
+            50% { box-shadow: 0 0 20px 5px rgba(0,240,255,0.2); }
+        }
 
-    .back-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #00FF41;
-      color: #000;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 100;
-    }
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
 
-    .back-to-top.visible {
-      opacity: 1;
-    }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .back-to-top:hover {
-      background: #00FFFF;
-      transform: translateY(-3px);
-    }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-weight: 400;
+        }
 
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-    .modal.active {
-      display: flex;
-    }
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-    .modal-content {
-      background: #0C0C0C;
-      border: 2px solid #00FF41;
-      border-radius: 8px;
-      max-width: 90%;
-      max-height: 90%;
-      overflow: auto;
-      position: relative;
-      box-shadow: 0 0 40px rgba(0, 255, 65, 0.4);
-    }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-cyan);
+        }
 
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: #FF0000;
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      z-index: 10;
-    }
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-    .modal-close:hover {
-      background: #FFFF00;
-      color: black;
-    }
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
 
-    .modal-image {
-      width: 100%;
-      max-height: 70vh;
-      object-fit: contain;
-    }
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 5rem;
+            flex-wrap: wrap;
+        }
 
-    @media (max-width: 768px) {
-      .floating-nav {
-        display: none;
-      }
-    }
-  </style>
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .about {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image-frame {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-frame::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--accent-cyan), transparent 30%);
+            animation: rotate 4s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .avatar-icon {
+            font-size: 8rem;
+            z-index: 1;
+        }
+
+        .about-text h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .about-highlight {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 2rem 0;
+        }
+
+        .about-highlight p {
+            margin: 0;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        /* Products/EA Section */
+        .products {
+            background: var(--bg-secondary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-primary));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0,240,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        a.product-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-icon img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0,255,136,0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--accent-green);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .product-card .category {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .product-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--bg-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-cyan);
+            background: var(--bg-tertiary);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Vision Mission */
+        .vision {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .vision-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .vision-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 4px 0 0 4px;
+        }
+
+        .vision-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .vision-list {
+            list-style: none;
+        }
+
+        .vision-list li {
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .vision-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: var(--bg-secondary);
+            text-align: center;
+            padding: 80px 5%;
+        }
+
+        .quote-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: var(--accent-cyan);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-author {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(0,240,255,0.1));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+        }
+
+        .disclaimer h4 {
+            font-family: 'Orbitron', monospace;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg-primary);
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem 3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-width: 200px;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .contact-item h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-image {
+                order: -1;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .about-highlight {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-methods {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
 </head>
-<body class="bg-dark-bg text-terminal-green overflow-x-hidden">
+<body>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
 
-  <!-- Floating Navigation -->
-  <div class="floating-nav">
-    <div class="nav-dot active" data-section="hero"></div>
-    <div class="nav-dot" data-section="about"></div>
-    <div class="nav-dot" data-section="portfolio"></div>
-    <div class="nav-dot" data-section="donate"></div>
-    <div class="nav-dot" data-section="contact"></div>
-  </div>
-
-  <!-- Back to Top Button -->
-  <div class="back-to-top" id="backToTop">↑</div>
-
-  <!-- Image Modal -->
-  <div class="modal" id="imageModal">
-    <div class="modal-content">
-      <div class="modal-close" id="modalClose">&times;</div>
-      <img id="modalImage" class="modal-image" src="" alt="Project Preview">
-      <div class="p-5 text-center border-t border-terminal-green">
-        <a id="downloadLink" href="#" target="_blank" class="bg-terminal-green text-black px-6 py-2 rounded hover:bg-terminal-blue transition-colors font-bold inline-block">
-          📥 DOWNLOAD
-        </a>
-      </div>
+    <!-- Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 3.5s;"></div>
     </div>
-  </div>
 
-  <!-- Main Terminal -->
-  <div class="relative z-10 min-h-screen p-4 max-w-6xl mx-auto">
-    
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">ROXYU<span>.</span>DEV</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#vision">Vision</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
-    <section id="hero" class="mb-8">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <div class="terminal-dot dot-red"></div>
-          <div class="terminal-dot dot-yellow"></div>
-          <div class="terminal-dot dot-green"></div>
-          <span class="text-xs text-gray-400">ea_developer@terminal:~$</span>
-          <div class="status-indicator ml-auto">
-            <div class="status-dot"></div>
-            <span class="text-terminal-green">ONLINE</span>
-          </div>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-badge fade-in">🚀 Expert Advisor Developer</span>
+            <h1 class="fade-in delay-1">
+                Building <span class="highlight">Intelligent</span><br>
+                Trading Systems
+            </h1>
+            <p class="hero-subtitle fade-in delay-2">
+                Pengembang Expert Advisor MT4/MT5 yang fokus pada keamanan balance, 
+                stabilitas, dan performa trading yang konsisten.
+            </p>
+            <div class="hero-cta fade-in delay-3">
+                <a href="#products" class="btn-primary">Lihat Products</a>
+                <a href="#contact" class="btn-secondary">Hubungi Saya</a>
+            </div>
+            <div class="stats fade-in delay-4">
+                <div class="stat-item">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Downloads</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Expert Advisors</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Gratis di Grup</span>
+                </div>
+            </div>
         </div>
-        
-        <div class="p-6 text-center">
-          <div class="text-terminal-green text-2xl font-bold mb-2">Roxyu Developer</div>
-          <div class="text-terminal-blue text-lg mb-4 terminal-cursor">Spesialis Pengembangan Expert Advisor untuk Forex & Crypto</div>
-          <div class="text-gray-400 text-sm max-w-2xl mx-auto">
-            Mengembangkan Expert Advisor yang powerful, reliable, dan menguntungkan. 
-            Setiap EA dirancang dengan strategi yang telah diuji dan optimasi maksimal.
-          </div>
-          
-          <div class="flex flex-wrap justify-center gap-4 mt-6">
-            <a href="#portfolio" class="bg-terminal-green text-black px-4 py-2 rounded hover:bg-terminal-blue transition-colors font-medium">
-              Lihat Portfolio
-            </a>
-            <a href="#contact" class="border border-terminal-green text-terminal-green px-4 py-2 rounded hover:bg-terminal-green hover:text-black transition-colors">
-              Hubungi Saya
-            </a>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="mb-8">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="text-xs">ABOUT.LOG</span>
+    <section class="about" id="about">
+        <div class="section-header">
+            <span class="section-tag">// Tentang Saya</span>
+            <h2 class="section-title">The Story Behind Roxyu Developer</h2>
         </div>
-        <div class="p-5">
-          <h2 class="section-title text-xl font-bold">Tentang Saya</h2>
-          <div class="space-y-4 text-sm">
-            <div class="flex items-start">
-              <span class="terminal-prompt mr-2">$</span>
-              <div>
-                <div class="text-terminal-blue">Spesialisasi: Expert Advisor Development (MT4, MT5)</div>
-                <div class="text-terminal-blue">Fokus: Strategi Forex & Cryptocurrency Automated Trading</div>
-                <div class="text-terminal-blue mt-2">Filosofi: Backtest Solid → Live Testing → Production Ready</div>
-                <div class="text-terminal-yellow mt-2">"Tidak hanya EA yang berjalan, tapi EA yang menguntungkan"</div>
-              </div>
+        <div class="about-content">
+            <div class="about-image">
+                <div class="product-icon">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/blacktrojan.jpg" alt="Black Trojan">
+                </div>
             </div>
-            
-            <div class="mt-4">
-              <div class="terminal-prompt">Keahlian:</div>
-              <div class="pl-4 text-terminal-green mt-2 space-y-2">
-                <div>• Pengembangan EA dengan MQL4 & MQL5</div>
-                <div>• Strategi Trading Automation (Trend Following, Grid, Martingale, dll)</div>
-                <div>• Backtesting & Optimization untuk performa maksimal</div>
-                <div>• Risk Management & Position Sizing</div>
-                <div>• Integration dengan berbagai Broker & API</div>
-              </div>
+            <div class="about-text">
+                <h3>Halo, Saya Bayu</h3>
+                <p>
+                    Roxyu Developer dibangun atas dasar iseng. Sebelum terjun ke dunia robot trading forex, 
+                    saya adalah pengemod handal game Minecraft dan pernah menjadi pengembang aplikasi Android 
+                    seperti pemutar musik, wallpaper, dan lainnya. Semua saya lakukan sendiri tanpa tim.
+                </p>
+                <p>
+                    Setelah berbagai kegagalan, saya kembali ke dunia trading dengan basic forex sejak SMA. 
+                    Trading manual membuat emosi dan ego memuncak, berakhir dengan MC berkali-kali. 
+                    Dari situlah saya mulai membuat EA pertama di MQL5.
+                </p>
+                <div class="about-highlight">
+                    <p>
+                        "EA pertama saya berhasil mengubah modal $20 menjadi $150 dalam 1 bulan. 
+                        Saya share secara gratis dan dalam 2 hari sudah didownload lebih dari 1000 orang."
+                    </p>
+                </div>
+                <p>
+                    Kini saya membangun komunitas anti drama, dimana semua EA bisa dipakai gratis di dalam grup. 
+                    Semua dana yang masuk digunakan untuk operasional, hire admin, dan pengembangan EA yang lebih baik.
+                </p>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="mb-8">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="text-xs">PORTFOLIO_DATABASE.JSON</span>
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="section-header">
+            <span class="section-tag">// Expert Advisors</span>
+            <h2 class="section-title">Products & Tools</h2>
+            <p class="section-desc">
+                Koleksi Expert Advisor yang telah dibuat dan dapat dipakai gratis di dalam komunitas
+            </p>
         </div>
-        <div class="p-5">
-          <h2 class="section-title text-xl font-bold mb-4">Portfolio Proyek EA</h2>
-          <div class="terminal-prompt mb-4">$ SELECT * FROM portfolio WHERE status='READY';</div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="portfolio-grid">
-            <div class="text-center py-10">
-              <div class="text-terminal-blue animate-pulse">Loading portfolio...</div>
+        <div class="products-grid">
+            <a href="https://linkproject-anda.com/black-trojan.html" target="_blank" class="product-card">
+                <div class="product-icon">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/blacktrojan.jpg" alt="Black Trojan">
+                </div>
+                <span class="product-badge">Heavy Class</span>
+                <h3>Black Trojan V0-7</h3>
+                <p class="category">Kelas BERAT</p>
+                <p>Expert Advisor dengan strategi agresif untuk kondisi market yang volatile.</p>
+            </a>
+            <div class="product-card">
+                <div class="product-icon">🛡️</div>
+                <span class="product-badge">Popular</span>
+                <h3>Anti Bandit</h3>
+                <p class="category">Tebar Jaring AVG</p>
+                <p>Strategi averaging yang aman dengan sistem tebar jaring untuk menangkap profit di berbagai kondisi market.</p>
             </div>
-          </div>
-          
-          <div class="terminal-prompt text-xs mt-4">
-            Query executed successfully. <span id="project-count">0</span> projects loaded.
-          </div>
+            <div class="product-card">
+                <div class="product-icon">⚡</div>
+                <span class="product-badge">Versatile</span>
+                <h3>Bar-Bar X Zoro</h3>
+                <p class="category">Single & Martingale</p>
+                <p>Fleksibel digunakan untuk mode single entry maupun martingale. Adaptif terhadap berbagai gaya trading.</p>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">🕷️</div>
+                <h3>Black Spider</h3>
+                <p class="category">Smart Entry System</p>
+                <p>Sistem entry cerdas yang memetakan pergerakan market seperti jaring laba-laba untuk menangkap momentum.</p>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">👑</div>
+                <span class="product-badge">Semi Manual</span>
+                <h3>King Tools V4-7</h3>
+                <p class="category">Semi Manual Trading</p>
+                <p>Tools untuk membantu trading semi manual dengan fitur-fitur canggih untuk eksekusi yang lebih presisi.</p>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">🔗</div>
+                <span class="product-badge">Copy System</span>
+                <h3>King Lot Master & Slave</h3>
+                <p class="category">Copy Trade System</p>
+                <p>Sistem copy trade internal untuk menduplikasi trade dari akun master ke akun slave secara otomatis.</p>
+            </div>
         </div>
-      </div>
     </section>
 
-    <!-- Donation Section -->
-    <section id="donate" class="mb-8">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="text-xs">DONATION_PROTOCOL.EXE</span>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-tag">// Fitur Komunitas</span>
+            <h2 class="section-title">What You Get</h2>
+            <p class="section-desc">
+                Benefit yang didapat ketika bergabung dengan komunitas Roxyu Developer
+            </p>
         </div>
-        <div class="p-5">
-          <h2 class="section-title text-xl font-bold mb-4">Dukung Pengembangan</h2>
-          
-          <div class="bg-card-bg border border-terminal-green rounded-lg p-5">
-            <div class="terminal-prompt mb-3">$ ./support_ea_dev --initialize</div>
-            <div class="text-terminal-yellow text-center my-4 font-medium">
-              🔥 DUKUNG PENGEMBANGAN EA LEBIH BAIK!
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h3>Indicator Gratis</h3>
+                <p>Berbagai indicator dari developer dan kontribusi member yang bisa digunakan bebas.</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <!-- Saweria Card -->
-              <div class="project-card p-4">
-                <div class="flex items-center space-x-3 mb-3">
-                  <div class="w-10 h-10 bg-terminal-green rounded flex items-center justify-center text-black font-bold">S</div>
-                  <div>
-                    <div class="text-terminal-green font-bold">SAWERIA</div>
-                    <div class="text-xs text-gray-400">Gateway Pembayaran Indonesia</div>
-                  </div>
-                </div>
-                
-                <div class="space-y-3">
-                  <div class="text-xs text-gray-400 space-y-1">
-                    <div>• Transfer Bank, E-wallet, QRIS</div>
-                    <div>• Tidak ada minimum donasi</div>
-                    <div>• Notifikasi real-time</div>
-                  </div>
-                  
-                  <a href="https://saweria.co/roxyudeveloper" target="_blank" 
-                     class="block w-full bg-terminal-green text-black text-center py-2 rounded hover:bg-terminal-blue transition-colors font-bold">
-                    $ DONASI_SEKARANG
-                  </a>
-                </div>
-              </div>
+            <div class="feature-card">
+                <span class="feature-icon">📚</span>
+                <h3>Tutorial Lengkap</h3>
+                <p>Tersedia banyak tutorial untuk membantu memahami penggunaan setiap EA dan tools.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💡</span>
+                <h3>Informasi Transparan</h3>
+                <p>Semua pengetahuan dibuka secara terang-terangan, tidak ada yang ditutup-tutupi.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚙️</span>
+                <h3>Share SET</h3>
+                <p>Sharing settingan dari para member untuk setiap EA agar performa optimal.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💬</span>
+                <h3>Diskusi Bebas</h3>
+                <p>Forum diskusi bebas untuk berbagi kritik, saran, dan pengalaman trading.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🧠</span>
+                <h3>IDE Logic Sharing</h3>
+                <p>Berbagi logika pengembangan EA untuk belajar membuat EA menggunakan AI.</p>
+            </div>
+        </div>
+    </section>
 
-              <!-- Buy Me a Coffee Card -->
-              <div class="project-card p-4">
-                <div class="flex items-center space-x-3 mb-3">
-                  <div class="w-10 h-10 bg-terminal-yellow rounded flex items-center justify-center text-black">☕</div>
-                  <div>
-                    <div class="text-terminal-yellow font-bold">BUY ME A COFFEE</div>
-                    <div class="text-xs text-gray-400">Platform Global</div>
-                  </div>
-                </div>
-                
-                <div class="space-y-3">
-                  <div class="text-xs text-gray-400 space-y-1">
-                    <div>• Kartu Kredit, PayPal, Stripe</div>
-                    <div>• Pembayaran internasional</div>
-                    <div>• Dukungan pembayaran global</div>
-                  </div>
-                  
-                  <a href="https://buymeacoffee.com/roxyudeveloper" target="_blank" 
-                     class="block w-full bg-terminal-yellow text-black text-center py-2 rounded hover:bg-terminal-blue hover:text-white transition-colors font-bold">
-                    ☕ BELI_KOPI
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- Vision Section -->
+    <section class="vision" id="vision">
+        <div class="section-header">
+            <span class="section-tag">// Visi & Misi</span>
+            <h2 class="section-title">Our Direction</h2>
         </div>
-      </div>
+        <div class="vision-container">
+            <div class="vision-grid">
+                <div class="vision-card">
+                    <h3>🎯 Visi</h3>
+                    <ul class="vision-list">
+                        <li>Komunitas yang sehat dan transparan tanpa pamer</li>
+                        <li>Tanpa senggol sana sini, anti drama</li>
+                        <li>EA yang berbeda dan mengedepankan keamanan balance</li>
+                        <li>Terus berkembang mengikuti modernisasi</li>
+                    </ul>
+                </div>
+                <div class="vision-card">
+                    <h3>🚀 Misi</h3>
+                    <ul class="vision-list">
+                        <li>Pengembangan EA tahan kondisi market gonjang-ganjing</li>
+                        <li>Sharing info tanpa mengklaim sebagai "edukasi"</li>
+                        <li>Tidak memberi angan-angan indah, tetap realistis</li>
+                        <li>Di puji tidak terbang, di hujat tidak tumbang</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <h4>⚠️ DISCLAIMER</h4>
+                <p>
+                    Trading memiliki resiko tinggi. Saya tidak pernah mengajak dan memberi angan-angan indah. 
+                    Saya realistis — jika belum paham tentang bidang ini, diwajibkan pelajari semua tentang trading terlebih dahulu.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <div class="quote-container">
+            <span class="quote-icon">"</span>
+            <p class="quote-text">
+                Banyak hal yang saya pelajari dari perjalanan ini. Tidak semua tentang bagaimana mencapai tujuan atau uang. 
+                Tetap berjalan biasa, terus belajar, dan tetap rendah. Karena rezeki sudah ada porsinya masing-masing, 
+                tidak perlu takut untuk miskin.
+            </p>
+            <span class="quote-author">— BAYU | ROXYU DEVELOPER</span>
+        </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="mb-8">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="text-xs">CONTACT_INTERFACE</span>
-        </div>
-        <div class="p-5">
-          <h2 class="section-title text-xl font-bold mb-4">Hubungi Saya</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div class="terminal-prompt mb-4">$ cat contact_info.conf</div>
-              <div class="space-y-3 text-sm pl-4">
-                <div class="flex items-center">
-                  <span class="terminal-prompt mr-2">></span>
-                  <span>Email: <a href="mailto:roxyudeveloper@gmail.com" class="text-terminal-blue hover:text-terminal-yellow">roxyudeveloper@gmail.com</a></span>
-                </div>
-                <div class="flex items-center">
-                  <span class="terminal-prompt mr-2">></span>
-                  <span>TikTok: <a href="https://tiktok.com/@souueei" target="_blank" class="text-terminal-blue hover:text-terminal-yellow">@souueei</a></span>
-                </div>
-                <div class="flex items-center">
-                  <span class="terminal-prompt mr-2">></span>
-                  <span>Status: <span class="text-terminal-green">Tersedia untuk proyek custom</span></span>
-                </div>
-                <div class="flex items-center">
-                  <span class="terminal-prompt mr-2">></span>
-                  <span>Respon: <span class="text-terminal-yellow">~24 jam</span></span>
-                </div>
-              </div>
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="section-header">
+                <span class="section-tag">// Hubungi</span>
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-desc">
+                    Tertarik bergabung atau ingin bekerja sama? Hubungi melalui channel berikut
+                </p>
             </div>
-            <div>
-              <div class="terminal-prompt mb-4">$ nano quick_message.txt</div>
-              <form class="space-y-4" id="contact-form">
-                <div>
-                  <label class="block text-sm mb-1">Nama:</label>
-                  <input type="text" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green" required>
-                </div>
-                <div>
-                  <label class="block text-sm mb-1">Email:</label>
-                  <input type="email" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green" required>
-                </div>
-                <div>
-                  <label class="block text-sm mb-1">Pesan:</label>
-                  <textarea rows="4" class="w-full bg-card-bg border border-terminal-green rounded px-3 py-2 text-terminal-green focus:outline-none focus:ring-1 focus:ring-terminal-green resize-none" required></textarea>
-                </div>
-                <button type="submit" class="bg-terminal-green text-black px-4 py-2 rounded hover:bg-terminal-blue transition-colors font-medium w-full">
-                  $ KIRIM_PESAN
-                </button>
-              </form>
+            <div class="contact-methods">
+                <a href="https://t.me/bayuarissandi" target="_blank" class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <h4>Telegram Owner</h4>
+                    <p>@bayuarissandi</p>
+                </a>
+                <a href="https://t.me/cummadia" target="_blank" class="contact-item">
+                    <span class="contact-icon">⚡</span>
+                    <h4>Admin Fast Respond</h4>
+                    <p>@cummadia</p>
+                </a>
+                <a href="mailto:roxyudeveloper@gmail.com" class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <h4>Email</h4>
+                    <p>roxyudeveloper@gmail.com</p>
+                </a>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- Footer -->
-    <footer class="text-center text-gray-500 text-sm py-6 border-t border-terminal-green/20">
-      <div class="terminal-prompt">Roxyu Developer &copy; 2024 - Dikembangkan dengan ❤️ dan ☕</div>
-      <div class="mt-2 text-xs">System Status: <span class="text-terminal-green">OPERATIONAL</span></div>
+    <footer>
+        <div class="footer-logo">ROXYU.DEV</div>
+        <p class="footer-text">© 2025 Roxyu Developer. Building intelligent trading systems.</p>
     </footer>
-  </div>
 
-  <script>
-    // Portfolio data JSON
-    const portfolioData = [
-      {
-        title: "King Tools Pro V7 Trial 09.01.2026",
-        description: "Semi Auto Trading tools",
-        image: "assets/img/king_tools.png",
-        downloadUrl: "https://pixeldrain.com/u/zJuy4mxg",
-        tags: ["Semi Auto", "MT5", "Tools Trading"]
-      }
-    ];
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      loadPortfolio();
-      initNavigation();
-      initBackToTop();
-      initContactForm();
-      initModal();
-    });
-
-    function loadPortfolio() {
-      const grid = document.getElementById('portfolio-grid');
-      const countElement = document.getElementById('project-count');
-      
-      grid.innerHTML = '';
-      
-      portfolioData.forEach((project, index) => {
-        setTimeout(() => {
-          const card = document.createElement('div');
-          card.className = 'project-card p-4 rounded animate-fade-in';
-          card.style.animationDelay = `${index * 0.1}s`;
-          card.style.cursor = 'pointer';
-          
-          card.innerHTML = `
-            <div class="terminal-prompt text-xs mb-2">ea_${index + 1}.exe</div>
-            <img src="${project.image}" alt="${project.title}" class="project-image rounded mb-3">
-            <h3 class="text-terminal-green font-bold mb-2 text-sm">${project.title}</h3>
-            <p class="text-gray-400 text-xs mb-3">${project.description}</p>
-            <div class="flex flex-wrap gap-1 mb-3">
-              ${project.tags.map(tag => `<span class="bg-terminal-green/20 text-terminal-green text-xs px-2 py-1 rounded">${tag}</span>`).join('')}
-            </div>
-            <div class="text-xs text-terminal-blue">$ ./preview_ea --zoom</div>
-          `;
-          
-          card.addEventListener('click', () => openModal(project));
-          grid.appendChild(card);
-        }, index * 100);
-      });
-      
-      setTimeout(() => {
-        countElement.textContent = portfolioData.length;
-      }, portfolioData.length * 100 + 100);
-    }
-
-    function initModal() {
-      const modal = document.getElementById('imageModal');
-      const closeBtn = document.getElementById('modalClose');
-      
-      closeBtn.addEventListener('click', closeModal);
-      
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
         }
-      });
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeModal();
-        }
-      });
-    }
 
-    function openModal(project) {
-      const modal = document.getElementById('imageModal');
-      const modalImage = document.getElementById('modalImage');
-      const downloadLink = document.getElementById('downloadLink');
-      
-      modalImage.src = project.image;
-      modalImage.alt = project.title;
-      downloadLink.href = project.downloadUrl;
-      downloadLink.textContent = `DOWNLOAD - ${project.title}`;
-      
-      modal.classList.add('active');
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('imageModal');
-      modal.classList.remove('active');
-    }
-
-    function initNavigation() {
-      const navDots = document.querySelectorAll('.nav-dot');
-      const sections = document.querySelectorAll('section');
-      
-      window.addEventListener('scroll', function() {
-        let current = '';
-        
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          
-          if (pageYOffset >= sectionTop - 100) {
-            current = section.getAttribute('id');
-          }
-        });
-        
-        navDots.forEach(dot => {
-          dot.classList.remove('active');
-          if (dot.getAttribute('data-section') === current) {
-            dot.classList.add('active');
-          }
-        });
-      });
-      
-      navDots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          const sectionId = this.getAttribute('data-section');
-          const section = document.getElementById(sectionId);
-          
-          if (section) {
-            window.scrollTo({
-              top: section.offsetTop - 20,
-              behavior: 'smooth'
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
             });
-          }
         });
-      });
-    }
 
-    function initBackToTop() {
-      const backToTopBtn = document.getElementById('backToTop');
-      
-      window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-          backToTopBtn.classList.add('visible');
-        } else {
-          backToTopBtn.classList.remove('visible');
-        }
-      });
-      
-      backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
-      });
-    }
 
-    function initContactForm() {
-      const contactForm = document.getElementById('contact-form');
-      
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const inputs = contactForm.querySelectorAll('input, textarea');
-        let isValid = true;
-        
-        inputs.forEach(input => {
-          if (!input.value.trim()) {
-            isValid = false;
-            input.style.borderColor = '#FF0000';
-          } else {
-            input.style.borderColor = '#00FF41';
-          }
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.product-card, .feature-card, .vision-card, .contact-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
-        
-        if (isValid) {
-          const submitBtn = contactForm.querySelector('button[type="submit"]');
-          const originalText = submitBtn.textContent;
-          
-          submitBtn.textContent = 'MENGIRIM...';
-          submitBtn.disabled = true;
-          
-          setTimeout(() => {
-            alert('Pesan berhasil dikirim! Saya akan membalas dalam 24 jam.');
-            contactForm.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-          }, 1500);
-        } else {
-          alert('Harap isi semua field yang diperlukan.');
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10,10,15,0.98)';
+            } else {
+                nav.style.background = 'rgba(10,10,15,0.9)';
+            }
+        });
+
+        // Counter animation for stats
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (element.dataset.suffix || '');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (element.dataset.suffix || '');
+                }
+            }, 30);
         }
-      });
-    }
-  </script>
+
+        // Trigger counter animation when stats are visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const text = stat.textContent;
+                        const number = parseInt(text.replace(/[^0-9]/g, ''));
+                        const suffix = text.replace(/[0-9]/g, '');
+                        stat.dataset.suffix = suffix;
+                        animateCounter(stat, number);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
+</body>
+</html>
