@@ -39,7 +39,6 @@
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -51,7 +50,6 @@
             border-radius: 4px;
         }
 
-        /* Grid Background */
         .grid-bg {
             position: fixed;
             top: 0;
@@ -66,7 +64,6 @@
             z-index: 0;
         }
 
-        /* Floating Particles */
         .particles {
             position: fixed;
             width: 100%;
@@ -93,7 +90,6 @@
             100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
 
-        /* Navigation */
         nav {
             position: fixed;
             top: 0;
@@ -175,7 +171,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -255,6 +250,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-block;
         }
 
         .btn-primary:hover {
@@ -283,7 +279,6 @@
             color: var(--accent-cyan);
         }
 
-        /* Stats Section */
         .stats {
             display: flex;
             justify-content: center;
@@ -311,7 +306,6 @@
             letter-spacing: 2px;
         }
 
-        /* Section Styles */
         section {
             padding: 100px 5%;
             position: relative;
@@ -347,7 +341,6 @@
             font-size: 1.1rem;
         }
 
-        /* About Section */
         .about {
             background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
         }
@@ -363,10 +356,14 @@
 
         .about-image {
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .about-image-frame {
             width: 100%;
+            max-width: 400px;
             aspect-ratio: 1;
             background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
             border-radius: 20px;
@@ -376,6 +373,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            padding: 1.5rem;
         }
 
         .about-image-frame::before {
@@ -394,8 +392,12 @@
             100% { transform: rotate(360deg); }
         }
 
-        .avatar-icon {
-            font-size: 8rem;
+        .about-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            position: relative;
             z-index: 1;
         }
 
@@ -426,26 +428,6 @@
             color: var(--text-primary);
         }
 
-        /* About Image Icon */
-        .about .product-icon {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .about .product-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-        }
-
-        /* Products/EA Section */
         .products {
             background: var(--bg-secondary);
         }
@@ -552,7 +534,6 @@
             line-height: 1.6;
         }
 
-        /* Product Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -643,12 +624,17 @@
             height: 300px;
             overflow: hidden;
             border-radius: 20px 20px 0 0;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            padding: 1rem;
         }
 
         .modal-body {
@@ -731,15 +717,12 @@
             gap: 1rem;
         }
 
-        .modal-actions .btn-primary {
-            flex: 1;
-        }
-
+        .modal-actions .btn-primary,
         .modal-actions .btn-secondary {
             flex: 1;
+            text-align: center;
         }
 
-        /* Features Section */
         .features {
             background: var(--bg-primary);
         }
@@ -797,7 +780,6 @@
             font-size: 0.95rem;
         }
 
-        /* Vision Mission */
         .vision {
             background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
         }
@@ -859,7 +841,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Quote Section */
         .quote-section {
             background: var(--bg-secondary);
             text-align: center;
@@ -894,7 +875,6 @@
             letter-spacing: 2px;
         }
 
-        /* Disclaimer */
         .disclaimer {
             background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(0,240,255,0.1));
             border: 1px solid var(--border-color);
@@ -918,7 +898,6 @@
             font-size: 0.95rem;
         }
 
-        /* Contact Section */
         .contact {
             background: var(--bg-primary);
         }
@@ -983,7 +962,6 @@
             font-size: 0.85rem;
         }
 
-        /* Footer */
         footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
@@ -1008,7 +986,6 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive */
         @media (max-width: 968px) {
             .about-content {
                 grid-template-columns: 1fr;
@@ -1017,7 +994,7 @@
 
             .about-image {
                 order: -1;
-                max-width: 300px;
+                max-width: 350px;
                 margin: 0 auto;
             }
 
@@ -1053,7 +1030,7 @@
             }
 
             .stat-number {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
 
             .hero-cta {
@@ -1079,7 +1056,6 @@
             }
         }
 
-        /* Animations */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -1098,17 +1074,14 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
 
-        /* Body no scroll when modal open */
         body.modal-open {
             overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <!-- Grid Background -->
     <div class="grid-bg"></div>
 
-    <!-- Particles -->
     <div class="particles">
         <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
         <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
@@ -1121,7 +1094,6 @@
         <div class="particle" style="left: 90%; animation-delay: 3.5s;"></div>
     </div>
 
-    <!-- Product Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div class="modal-close" onclick="closeModal()"></div>
@@ -1138,14 +1110,13 @@
                     <ul id="modalFeatures"></ul>
                 </div>
                 <div class="modal-actions">
-                    <a href="#" id="modalLink" target="_blank" class="btn-primary">Go Check</a>
-                    <button class="btn-secondary" onclick="closeModal()">Close</button>
+                    <a href="#" id="modalLink" target="_blank" rel="noopener noreferrer" class="btn-primary">Go Check</a>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav>
         <div class="logo">ROXYU<span>.</span>DEV</div>
         <ul class="nav-links">
@@ -1163,7 +1134,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
             <span class="hero-badge fade-in">Expert Advisor Developer</span>
@@ -1181,22 +1151,21 @@
             </div>
             <div class="stats fade-in delay-4">
                 <div class="stat-item">
-                    <span class="stat-number">+1000Free(+300Premium)</span>
-                    <span class="stat-label">Downloads(Aktif Grup)</span>
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Free Downloads</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">300+</span>
+                    <span class="stat-label">Premium Member</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">10+</span>
                     <span class="stat-label">Expert Advisors</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">Gratis di Grup</span>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
     <section class="about" id="about">
         <div class="section-header">
             <span class="section-tag">// Tentang Saya</span>
@@ -1204,7 +1173,7 @@
         </div>
         <div class="about-content">
             <div class="about-image">
-                <div class="product-icon">
+                <div class="about-image-frame">
                     <img src="https://roxyudeveloper.github.io/roxyu/assets/img/roxyuteam.png" alt="RoxyuTeam">
                 </div>
             </div>
@@ -1234,7 +1203,6 @@
         </div>
     </section>
 
-    <!-- Products Section -->
     <section class="products" id="products">
         <div class="section-header">
             <span class="section-tag">// Expert Advisors</span>
@@ -1270,7 +1238,7 @@
                 data-features="Grid Trading System,Risk Management Otomatis,Trailing Stop Dynamic,Support MT4 dan MT5,Backtest Verified"
                 data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kosong.html">
                 <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/BlackSpider.png" alt="Shadow Striker">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/BlackSpider.png" alt="Black Spider">
                 </div>
                 <span class="product-badge">Medium Class</span>
                 <h3>Black Spider</h3>
@@ -1287,7 +1255,7 @@
                 data-features="Low Risk Strategy,Capital Protection System,Slow but Steady Growth,Minimal Drawdown,Beginner Friendly"
                 data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kosong.html">
                 <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/AntiBandit.png" alt="Safe Guard Pro">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/AntiBandit.png" alt="Anti Bandit">
                 </div>
                 <span class="product-badge">Light Class</span>
                 <h3>Anti Bandit</h3>
@@ -1304,7 +1272,7 @@
                 data-features="Asian Session Optimized,Scalping Strategy,Quick Take Profit,Low Spread Requirement,Session Time Filter"
                 data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kosong.html">
                 <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/BarBarXZoro.png" alt="Night Scalper X">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/BarBarXZoro.png" alt="Bar-Bar X Zoro">
                 </div>
                 <span class="product-badge">Heavy Class</span>
                 <h3>Bar-Bar X Zoro</h3>
@@ -1321,10 +1289,10 @@
                 data-features="Trend Detection Algorithm,Multi Timeframe Analysis,Dynamic Position Sizing,Break Even System,Partial Close Feature"
                 data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kosong.html">
                 <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/KingTools.png" alt="Trend Hunter V2">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/KingTools.png" alt="King Tools V7">
                 </div>
                 <span class="product-badge">Medium Class</span>
-                <h3>king Tools V7</h3>
+                <h3>King Tools V7</h3>
                 <p class="category">Kelas MENENGAH</p>
                 <p>Expert Advisor berbasis trend following. Menangkap momentum besar.</p>
             </div>
@@ -1338,7 +1306,7 @@
                 data-features="XAUUSD Optimized,High Volatility Handler,Spread Protection,News Avoidance,Recovery Mode"
                 data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kosong.html">
                 <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/KingLotMember.png" alt="Gold Digger EA">
+                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/KingLotMember.png" alt="King Lot Member">
                 </div>
                 <span class="product-badge">Heavy Class</span>
                 <h3>King Lot Member</h3>
@@ -1348,7 +1316,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features" id="features">
         <div class="section-header">
             <span class="section-tag">// Fitur Komunitas</span>
@@ -1403,7 +1370,6 @@
         </div>
     </section>
 
-    <!-- Vision Section -->
     <section class="vision" id="vision">
         <div class="section-header">
             <span class="section-tag">// Visi & Misi</span>
@@ -1441,7 +1407,6 @@
         </div>
     </section>
 
-    <!-- Quote Section -->
     <section class="quote-section">
         <div class="quote-container">
             <span class="quote-icon">"</span>
@@ -1454,7 +1419,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="contact-container">
             <div class="section-header">
@@ -1465,14 +1429,14 @@
                 </p>
             </div>
             <div class="contact-methods">
-                <a href="https://t.me/bayuarissandi" target="_blank" class="contact-item">
+                <a href="https://t.me/bayuarissandi" target="_blank" rel="noopener noreferrer" class="contact-item">
                     <div class="contact-icon">
                         <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
                     </div>
                     <h4>Telegram Owner</h4>
                     <p>@bayuarissandi</p>
                 </a>
-                <a href="https://t.me/cummadia" target="_blank" class="contact-item">
+                <a href="https://t.me/cummadia" target="_blank" rel="noopener noreferrer" class="contact-item">
                     <div class="contact-icon">
                         <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     </div>
@@ -1490,40 +1454,39 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-logo">ROXYU.DEV</div>
         <p class="footer-text">2025 Roxyu Developer. Building intelligent trading systems.</p>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
         function toggleMenu() {
             document.querySelector('.nav-links').classList.toggle('active');
         }
 
-        // Close menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 document.querySelector('.nav-links').classList.remove('active');
             });
         });
 
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // PERBAIKAN: Smooth scroll hanya untuk anchor link internal
+        document.querySelectorAll('.nav-links a[href^="#"], .hero-cta a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#') && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
             });
         });
 
-        // Product Modal Functions
         function openModal(card) {
             const modal = document.getElementById('productModal');
             const image = card.dataset.image;
@@ -1559,21 +1522,27 @@
             document.body.classList.remove('modal-open');
         }
 
-        // Close modal when clicking outside
         document.getElementById('productModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
-        // Close modal with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
         });
 
-        // Intersection Observer for animations
+        // PERBAIKAN: Event listener khusus untuk tombol Go Check
+        document.getElementById('modalLink').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const url = this.href;
+            if (url && url !== '#' && url !== window.location.href + '#') {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        });
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1588,7 +1557,6 @@
             });
         }, observerOptions);
 
-        // Observe elements for animation
         document.querySelectorAll('.product-card, .feature-card, .vision-card, .contact-item').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -1596,7 +1564,6 @@
             observer.observe(el);
         });
 
-        // Navbar background on scroll
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
@@ -1605,43 +1572,6 @@
                 nav.style.background = 'rgba(10,10,15,0.9)';
             }
         });
-
-        // Counter animation for stats
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target + (element.dataset.suffix || '');
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current) + (element.dataset.suffix || '');
-                }
-            }, 30);
-        }
-
-        // Trigger counter animation when stats are visible
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNumbers = entry.target.querySelectorAll('.stat-number');
-                    statNumbers.forEach(stat => {
-                        const text = stat.textContent;
-                        const number = parseInt(text.replace(/[^0-9]/g, ''));
-                        const suffix = text.replace(/[0-9]/g, '');
-                        stat.dataset.suffix = suffix;
-                        animateCounter(stat, number);
-                    });
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const statsSection = document.querySelector('.stats');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
-        }
     </script>
 </body>
 </html>
