@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EA Anti Bandit Premium V3 - Roxyu Developer</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(40, 40, 40, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(30, 30, 30, 0.15) 0%, transparent 20%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .version {
+            display: inline-block;
+            background: linear-gradient(90deg, #222, #333);
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #444;
+        }
+        
+        /* Section Styles */
+        .section {
+            background-color: #111;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #222;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #333;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '▶';
+            margin-right: 10px;
+            color: #ff8c00;
+            font-size: 0.9rem;
+        }
+        
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(145deg, #151515, #1a1a1a);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff8c00;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-left-color: #ffd700;
+            background: linear-gradient(145deg, #1a1a1a, #202020);
+        }
+        
+        .feature-title {
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .feature-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        
+        /* List Styles */
+        .param-list {
+            list-style-type: none;
+        }
+        
+        .param-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #151515;
+            border-radius: 8px;
+            border-left: 3px solid #333;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .param-item:hover {
+            border-left-color: #ff8c00;
+            background-color: #1a1a1a;
+        }
+        
+        .param-name {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        
+        .param-value {
+            color: #ff8c00;
+            font-weight: 600;
+            background-color: #222;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        /* License Badge */
+        .license-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(90deg, #1a472a, #2a623d);
+            color: #90ee90;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid #3a7d5a;
+        }
+        
+        .license-badge::before {
+            content: '✓';
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-link {
+            color: #ff8c00;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .contact-link:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+        
+        .contact-link::before {
+            content: '▶';
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+        }
+        
+        .highlight {
+            animation: glow 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">EA Anti Bandit Premium V3</h1>
+            <p class="tagline">Strategi: Aggressive Averaging + Smart Hedging + Dynamic Drawdown Protection</p>
+            <span class="version">VERSION 3.00</span>
+            <div class="license-badge highlight">
+                LICENSED PRODUCT - Roxyu Developer
+            </div>
+        </header>
+        
+        <!-- Overview Section -->
+        <section class="section">
+            <h2 class="section-title">🏴‍☠️ Overview EA</h2>
+            <p style="margin-bottom: 15px;">EA Anti Bandit Premium V3 adalah Expert Advisor canggih dengan sistem <strong>Averaging Agresif</strong> dan <strong>Hedging Pintar</strong>, dilengkapi dengan proteksi risiko multi-layer dan sistem license terintegrasi.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3 class="feature-title">⚡ Sistem Averaging Dinamis</h3>
+                    <p class="feature-desc">Dilengkapi dengan pengaturan lot yang fleksibel dan pengali lot yang dapat disesuaikan dengan kondisi pasar.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🛡️ Proteksi Multi-Layer</h3>
+                    <p class="feature-desc">Trailing Stop, Break Even, Floating Loss Protection, Daily Profit/Loss Limit, dan Filter Sesi Trading.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🔗 Smart Hedging System</h3>
+                    <p class="feature-desc">Sistem hedging otomatis yang aktif saat kondisi tertentu terpenuhi, dengan pengaturan lot terpisah.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🔐 License System</h3>
+                    <p class="feature-desc">Sistem verifikasi license online dengan deteksi otomatis account ID, EA name, dan version.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Parameter Settings -->
+        <section class="section">
+            <h2 class="section-title">⚙️ Parameter Utama</h2>
+            
+            <h3 style="color: #ff8c00; margin: 20px 0 15px 0;">Pengaturan Lot</h3>
+            <ul class="param-list">
+                <li class="param-item">
+                    <span class="param-name">Maksimal Posisi Per Arah</span>
+                    <span class="param-value">10</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Lot Awal (Pertama)</span>
+                    <span class="param-value">0.01</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Pengali Lot Averaging</span>
+                    <span class="param-value">1.5</span>
+                </li>
+            </ul>
+            
+            <h3 style="color: #ff8c00; margin: 25px 0 15px 0;">Manajemen Risiko</h3>
+            <ul class="param-list">
+                <li class="param-item">
+                    <span class="param-name">Target Profit Harian ($)</span>
+                    <span class="param-value">100.0</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Batas Loss Harian ($)</span>
+                    <span class="param-value">500.0</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Floating Loss Maksimal ($)</span>
+                    <span class="param-value">10000.0</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Target Floating Profit (%)</span>
+                    <span class="param-value">20.0%</span>
+                </li>
+            </ul>
+            
+            <h3 style="color: #ff8c00; margin: 25px 0 15px 0;">Sistem Hedging</h3>
+            <ul class="param-list">
+                <li class="param-item">
+                    <span class="param-name">Trigger Hedge (Jumlah Posisi)</span>
+                    <span class="param-value">3</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Pengali Lot Hedge</span>
+                    <span class="param-value">1.0</span>
+                </li>
+                <li class="param-item">
+                    <span class="param-name">Maksimal Posisi Hedge</span>
+                    <span class="param-value">5</span>
+                </li>
+            </ul>
+        </section>
+        
+        <!-- Fitur Canggih -->
+        <section class="section">
+            <h2 class="section-title">🚀 Fitur Canggih</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3 class="feature-title">📊 Auto Symbol Detection</h3>
+                    <p class="feature-desc">Mendeteksi otomatis symbol trading (XAUUSD, BTCUSD, Forex pairs) dengan berbagai variasi suffix.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">⏰ Session Filter</h3>
+                    <p class="feature-desc">Filter sesi trading Asia, Eropa, US, dan Oceania dengan penyesuaian timezone otomatis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">📰 News Filter</h3>
+                    <p class="feature-desc">Proteksi dari volatility berita high-impact (NFP, FOMC, CPI) dengan pause trading otomatis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">🤠 Cowboy Theme Panel</h3>
+                    <p class="feature-desc">Control panel dengan tema Western yang informatif dan user-friendly.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- License & Security -->
+        <section class="section">
+            <h2 class="section-title">🔒 Sistem License & Keamanan</h2>
+            <div style="background: linear-gradient(135deg, #151515, #1a1a1a); padding: 20px; border-radius: 10px; border: 1px solid #333;">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">License Protection System</h3>
+                <ul style="color: #aaa; padding-left: 20px; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">✅ Verifikasi online ke server license</li>
+                    <li style="margin-bottom: 10px;">✅ Auto-detection EA name dan version</li>
+                    <li style="margin-bottom: 10px;">✅ Heartbeat system untuk monitoring real-time</li>
+                    <li style="margin-bottom: 10px;">✅ Account ID binding</li>
+                    <li style="margin-bottom: 10px;">✅ Protection terhadap redistribusi ilegal</li>
+                </ul>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
+                    <div style="flex: 1; min-width: 200px; background-color: #222; padding: 15px; border-radius: 8px; border-left: 4px solid #2a623d;">
+                        <h4 style="color: #90ee90; margin-bottom: 8px;">Mode Support</h4>
+                        <p style="color: #aaa; font-size: 0.9rem;">• Demo Account<br>• Backtest Mode<br>• Real Account</p>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 200px; background-color: #222; padding: 15px; border-radius: 8px; border-left: 4px solid #ff8c00;">
+                        <h4 style="color: #ffd700; margin-bottom: 8px;">Auto-Detection</h4>
+                        <p style="color: #aaa; font-size: 0.9rem;">• Platform (MT4/MT5)<br>• Account Type<br>• Symbol & Timeframe<br>• Broker Information</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Developer Info -->
+        <section class="section">
+            <h2 class="section-title">👨‍💻 Developer Information</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+                <div style="flex: 1; min-width: 250px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px;">Roxyu Developer</h3>
+                    <p style="color: #aaa; margin-bottom: 15px;">EA Anti Bandit Premium V3 dikembangkan oleh Roxyu Developer dengan sistem proteksi dan manajemen risiko canggih untuk trading yang lebih aman dan terkontrol.</p>
+                    
+                    <div style="background-color: #151515; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #333;">
+                        <p style="color: #ff8c00; font-weight: 600; margin-bottom: 10px;">⚠️ PERINGATAN RESMI</p>
+                        <p style="color: #aaa; font-size: 0.9rem;">EA ini adalah produk resmi Roxyu Developer. Dilarang keras memperjualbelikan kembali dalam bentuk apapun tanpa izin resmi. Setiap pelanggaran akan berakibat blacklist permanen.</p>
+                    </div>
+                </div>
+                
+                <div style="flex: 1; min-width: 250px;">
+                    <h3 style="color: #ffd700; margin-bottom: 15px;">Kontak Resmi</h3>
+                    <div class="contact-links" style="justify-content: flex-start;">
+                        <a href="https://roxyudeveloper.github.io/roxyu" class="contact-link" target="_blank">Website Resmi</a>
+                        <a href="https://t.me/bayuarissandi" class="contact-link" target="_blank">Telegram: @bayuarissandi</a>
+                        <a href="https://tiktok.com/@souueei" class="contact-link" target="_blank">TikTok: @souueei</a>
+                    </div>
+                    
+                    <div style="margin-top: 25px; padding: 15px; background: linear-gradient(135deg, #1a1a1a, #222); border-radius: 8px; border: 1px solid #333;">
+                        <p style="color: #aaa; font-size: 0.9rem;"><strong>Symbol Support:</strong> XAUUSD, BTCUSD, dan pair forex utama</p>
+                        <p style="color: #aaa; font-size: 0.9rem; margin-top: 8px;"><strong>Platform:</strong> MetaTrader 4</p>
+                        <p style="color: #aaa; font-size: 0.9rem; margin-top: 8px;"><strong>Strategy:</strong> Aggressive Averaging + Smart Hedging</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 EA Anti Bandit Premium V3. All Rights Reserved.</p>
+            <p style="color: #666; margin-top: 10px; font-size: 0.85rem;">Dikembangkan oleh Roxyu Developer | Protected by License System</p>
+            
+            <div class="contact-links">
+                <a href="https://roxyudeveloper.github.io/roxyu" class="contact-link" target="_blank">Situs Resmi</a>
+                <a href="https://t.me/bayuarissandi" class="contact-link" target="_blank">Telegram Support</a>
+                <a href="https://tiktok.com/@souueei" class="contact-link" target="_blank">TikTok</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Simple interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to feature cards
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // Update year in footer
+            const yearSpan = document.querySelector('footer p:first-child');
+            if(yearSpan) {
+                const currentYear = new Date().getFullYear();
+                yearSpan.innerHTML = yearSpan.innerHTML.replace('2025', currentYear);
+            }
+            
+            // Highlight important parameters
+            const importantParams = ['Target Profit Harian', 'Batas Loss Harian', 'Floating Loss Maksimal'];
+            const paramItems = document.querySelectorAll('.param-item');
+            paramItems.forEach(item => {
+                const paramName = item.querySelector('.param-name').textContent;
+                if(importantParams.includes(paramName)) {
+                    item.classList.add('highlight');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
