@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>King Tools Pro V10 - Professional Trading Panel for MT5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, rgba(30,10,10,0.6), rgba(10,10,20,0.6));
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(200,50,50,0.3);
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 52px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b, #e67e22);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        .version {
+            color: #e74c3c;
+        }
+
+        /* Stats Grid */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(20,15,15,0.8);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(200,50,50,0.2);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #e74c3c;
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            background: rgba(15,12,12,0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+            display: inline-block;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: rgba(0,0,0,0.3);
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .feature h4 {
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        /* Tools Grid */
+        .tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tool {
+            background: rgba(231,76,60,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(231,76,60,0.3);
+        }
+
+        .tool-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .tool-desc {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .param-table th, .param-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .param-table th {
+            background: rgba(231,76,60,0.15);
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        /* Shortcut Grid */
+        .shortcuts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .shortcut {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        .shortcut-key {
+            background: #e74c3c;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .shortcut-desc {
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        /* Theme Colors */
+        .theme-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .theme-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .theme-red { background: #8b1a1a; color: #ffaaaa; }
+        .theme-gold { background: #8b6914; color: #ffdd88; }
+        .theme-blue { background: #1a2a5a; color: #aacdff; }
+        .theme-emerald { background: #1a5a3a; color: #aaffcc; }
+        .theme-white { background: #e8e8e8; color: #333; }
+        .theme-purple { background: #3a1a5a; color: #ddaaff; }
+
+        /* Warning */
+        .warning {
+            background: rgba(231,76,60,0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .warning h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(231,76,60,0.05));
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            margin: 8px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(231,76,60,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(231,76,60,0.1);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 40px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .dev-info {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .dev-link {
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .dev-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .section-title { font-size: 20px; }
+            .stat-number { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="badge">PREMIUM PROFESSIONAL TOOL</div>
+            <h1>KING TOOLS PRO<br>V10</h1>
+            <div class="subtitle">
+                Professional Trading Panel for MetaTrader 5<br>
+                <span class="version">Version 10.0 | All-in-One Solution</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Indicators Analysis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Color Themes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Keyboard Shortcuts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Drag & Drop Ready</div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="section">
+            <h2 class="section-title">About King Tools Pro V10</h2>
+            <p style="margin-top: 15px;">King Tools Pro V10 adalah professional trading panel untuk MetaTrader 5 yang menggabungkan berbagai tools analisis teknikal, signal generator, dan risk management dalam satu antarmuka yang elegan. Dirancang untuk trader serius yang menginginkan kontrol penuh atas trading mereka.</p>
+        </div>
+
+        <!-- Main Features -->
+        <div class="section">
+            <h2 class="section-title">Core Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>Multi-Panel Dashboard</h4>
+                    <p>5 panel terintegrasi: Account Info, Quick Trade, Strategy Tools, Settings, dan Signal Analysis. Semua panel dapat di-drag & drop.</p>
+                </div>
+                <div class="feature">
+                    <h4>Signal Analysis System</h4>
+                    <p>Analisis 7 indikator (RSI, MA, Stochastic, BB, MACD, Price Action, Trend) dengan probability scoring 0-100%.</p>
+                </div>
+                <div class="feature">
+                    <h4>Support & Resistance (SNR)</h4>
+                    <p>Auto-detection of support and resistance levels dengan customizable lookback period dan touch points.</p>
+                </div>
+                <div class="feature">
+                    <h4>Supertrend & Parabolic SAR</h4>
+                    <p>Trend following indicators dengan real-time update di chart.</p>
+                </div>
+                <div class="feature">
+                    <h4>Global TP/SL System</h4>
+                    <p>Set sekali untuk semua posisi. Aktif/nonaktif dengan satu tombol.</p>
+                </div>
+                <div class="feature">
+                    <h4>Averaging System</h4>
+                    <p>Automatic averaging dengan lot multiplier (MathPow formula).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Tools -->
+        <div class="section">
+            <h2 class="section-title">Strategy Tools</h2>
+            <div class="tools">
+                <div class="tool">
+                    <div class="tool-name">MA Crossover</div>
+                    <div class="tool-desc">Fast & Slow MA dengan multiple method (SMA, EMA, SMMA)</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">SNR Auto-Detect</div>
+                    <div class="tool-desc">Support & Resistance dengan multi-touch validation</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">Supertrend</div>
+                    <div class="tool-desc">ATR-based trend following system</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">Parabolic SAR</div>
+                    <div class="tool-desc">Stop and reversal system</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signal Analysis Breakdown -->
+        <div class="section">
+            <h2 class="section-title">Signal Analysis System</h2>
+            <table class="param-table">
+                <tr><th>Indicator</th><th>Weight</th><th>Analysis Logic</th></tr>
+                <tr><td>RSI (14)</td><td>15%</td><td>Oversold/Overbought detection with scoring 0-100</td></tr>
+                <tr><td>MA Crossover</td><td>20%</td><td>EMA 9 vs EMA 21 with price position analysis</td></tr>
+                <tr><td>Stochastic</td><td>15%</td><td>K/D crossing with zone detection</td></tr>
+                <tr><td>Bollinger Bands</td><td>15%</td><td>Price position within bands (0-100% scale)</td></tr>
+                <tr><td>MACD</td><td>15%</td><td>Histogram and signal line analysis</td></tr>
+                <tr><td>Price Action</td><td>10%</td><td>Candlestick pattern recognition</td></tr>
+                <tr><td>Trend</td><td>10%</td><td>Multi-MA trend strength analysis</td></tr>
+            </table>
+            <p style="margin-top: 10px; font-size: 13px; color: #e74c3c;">Final signal: STRONG BUY / BUY / WAIT / SELL / STRONG SELL dengan probability 0-100%</p>
+        </div>
+
+        <!-- Risk Management -->
+        <div class="section">
+            <h2 class="section-title">Risk Management Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>Global TP/SL</h4>
+                    <p>Set take profit dan stop loss global yang berlaku untuk semua posisi baru.</p>
+                </div>
+                <div class="feature">
+                    <h4>Auto Breakeven</h4>
+                    <p>Otomatis memindahkan stop loss ke entry saat profit mencapai trigger pips.</p>
+                </div>
+                <div class="feature">
+                    <h4>Trailing Stop</h4>
+                    <p>Mengunci profit dengan trailing stop otomatis setelah posisi profit.</p>
+                </div>
+                <div class="feature">
+                    <h4>Manual Trade Management</h4>
+                    <p>Auto TP/SL, BE, dan trailing untuk posisi manual (non-EA).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="section">
+            <h2 class="section-title">Keyboard Shortcuts</h2>
+            <div class="shortcuts">
+                <div class="shortcut"><span class="shortcut-key">P</span><span class="shortcut-desc">Toggle Dashboard</span></div>
+                <div class="shortcut"><span class="shortcut-key">1</span><span class="shortcut-desc">Account Panel</span></div>
+                <div class="shortcut"><span class="shortcut-key">2</span><span class="shortcut-desc">Trade Panel</span></div>
+                <div class="shortcut"><span class="shortcut-key">3</span><span class="shortcut-desc">Strategy Panel</span></div>
+                <div class="shortcut"><span class="shortcut-key">4</span><span class="shortcut-desc">Settings Panel</span></div>
+                <div class="shortcut"><span class="shortcut-key">H</span><span class="shortcut-desc">Hide All Panels</span></div>
+                <div class="shortcut"><span class="shortcut-key">A</span><span class="shortcut-desc">Analyze Signal</span></div>
+                <div class="shortcut"><span class="shortcut-key">ESC</span><span class="shortcut-desc">Close Sub Panels</span></div>
+            </div>
+        </div>
+
+        <!-- Color Themes -->
+        <div class="section">
+            <h2 class="section-title">Color Themes</h2>
+            <div class="theme-row">
+                <span class="theme-badge theme-red">Red Fire (Default)</span>
+                <span class="theme-badge theme-gold">Dark Gold</span>
+                <span class="theme-badge theme-blue">Midnight Blue</span>
+                <span class="theme-badge theme-emerald">Emerald Dark</span>
+                <span class="theme-badge theme-white">White Pearl</span>
+                <span class="theme-badge theme-purple">Deep Purple</span>
+            </div>
+            <p style="margin-top: 15px; font-size: 13px;">Semua warna dapat diubah dengan satu klik. Pengaturan tema tersimpan secara otomatis.</p>
+        </div>
+
+        <!-- Pending Order Types -->
+        <div class="section">
+            <h2 class="section-title">Pending Order Support</h2>
+            <div class="tools">
+                <div class="tool">
+                    <div class="tool-name">BUY STOP</div>
+                    <div class="tool-desc">Entry di atas harga pasar</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">SELL STOP</div>
+                    <div class="tool-desc">Entry di bawah harga pasar</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">BUY LIMIT</div>
+                    <div class="tool-desc">Entry di bawah harga pasar</div>
+                </div>
+                <div class="tool">
+                    <div class="tool-name">SELL LIMIT</div>
+                    <div class="tool-desc">Entry di atas harga pasar</div>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 13px;">Support multi-layer pending orders dengan custom entry price dan gap antar layer.</p>
+        </div>
+
+        <!-- Warning -->
+        <div class="warning">
+            <h4>Disclaimer</h4>
+            <ul style="margin-left: 20px; color: #ccc;">
+                <li>Trading Forex dan CFD memiliki risiko tinggi</li>
+                <li>Pastikan Anda memahami risiko sebelum trading</li>
+                <li>Hasil masa lalu tidak menjamin hasil di masa depan</li>
+                <li>Gunakan manajemen risiko yang tepat</li>
+                <li>Test di demo account terlebih dahulu</li>
+            </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta">
+            <h3 style="margin-bottom: 15px;">Professional Trading at Your Fingertips</h3>
+            <p style="margin-bottom: 20px; color: #aaa;">King Tools Pro V10 - The Ultimate Trading Panel for MT5</p>
+        </div>
+
+        <!-- Developer Info -->
+        <div class="dev-info">
+            <a href="https://roxyudeveloper.github.io/roxyu" class="dev-link" target="_blank">Website Resmi</a>
+            <a href="https://t.me/bayuarissandi" class="dev-link" target="_blank">Telegram: @bayuarissandi</a>
+            <a href="https://tiktok.com/@souueei" class="dev-link" target="_blank">TikTok: @souueei</a>
+        </div>
+
+        <!-- Code Info -->
+        <div style="background: #0a0a0a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; margin: 20px 0; border: 1px solid #222;">
+            <span style="color: #e74c3c;">// King Tools Pro V10</span><br>
+            <span style="color: #666;">// Professional Trading Panel for MetaTrader 5</span><br>
+            <span style="color: #666;">// Features: Signal Analysis | SNR Detection | MA Crossover | Supertrend | SAR | Averaging System</span><br>
+            <span style="color: #666;">// Developer: Roxyu Developer</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Copyright 2026 Roxyu Developer | King Tools Pro V10 | All Rights Reserved</p>
+            <p style="margin-top: 8px;">Trading Forex dan CFD memiliki risiko tinggi. Pastikan Anda memahami risikonya sebelum trading.</p>
+        </div>
+    </div>
+</body>
+</html>

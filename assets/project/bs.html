@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Spider Evolution - Smart Hedging & Martingale Grid EA for MT5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #c0392b;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #c0392b;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 52px;
+            background: linear-gradient(135deg, #ffffff, #c0392b, #e74c3c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .version {
+            color: #c0392b;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(20,15,15,0.8);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(192,57,43,0.3);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #c0392b;
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            background: rgba(15,12,12,0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c0392b;
+            display: inline-block;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: rgba(0,0,0,0.3);
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 3px solid #c0392b;
+        }
+
+        .feature h4 {
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        /* Modes */
+        .modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .mode {
+            background: rgba(192,57,43,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(192,57,43,0.3);
+        }
+
+        .mode-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .mode-desc {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .param-table th, .param-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .param-table th {
+            background: rgba(192,57,43,0.15);
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        /* Strategy Flow */
+        .flow {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .flow-num {
+            width: 30px;
+            height: 30px;
+            background: #c0392b;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        /* Warning */
+        .warning {
+            background: rgba(192,57,43,0.1);
+            border-left: 4px solid #c0392b;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .warning h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(192,57,43,0.1), rgba(192,57,43,0.05));
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            margin: 8px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(192,57,43,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #c0392b;
+            border: 1px solid #c0392b;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(192,57,43,0.1);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 40px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .dev-info {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .dev-link {
+            color: #c0392b;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .dev-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .section-title { font-size: 20px; }
+            .stat-number { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="badge">BLACK SPIDER EVOLUTION</div>
+            <h1>BLACK SPIDER<br>EVOLUTION</h1>
+            <div class="subtitle">
+                Smart Hedging + Martingale Grid System for MetaTrader 5<br>
+                <span class="version">Version 6.00 | Professional Grade EA</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">200</div>
+                <div class="stat-label">Max Layers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Order Modes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Symbol Types</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1.1x</div>
+                <div class="stat-label">Martingale Mult</div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="section">
+            <h2 class="section-title">About Black Spider Evolution</h2>
+            <p style="margin-top: 15px;">Black Spider Evolution adalah Expert Advisor untuk MetaTrader 5 yang menggabungkan strategi Martingale Grid dengan Smart Hedging System. EA ini dirancang untuk memanfaatkan pergerakan harga dengan pendekatan averaging yang dikombinasikan dengan hedging otomatis untuk meminimalisir drawdown.</p>
+        </div>
+
+        <!-- Core Features -->
+        <div class="section">
+            <h2 class="section-title">Core Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>Smart Hedging System</h4>
+                    <p>Hedge otomatis diaktifkan setelah mencapai layer tertentu. Posisi hedge akan terus di-averaging hingga TP/BE/Trail kena.</p>
+                </div>
+                <div class="feature">
+                    <h4>Loop Infinity Mode</h4>
+                    <p>Cycle berulang tanpa henti. Main → Hedge → Main baru → Hedge baru. Trading otomatis 24/5 tanpa intervensi manual.</p>
+                </div>
+                <div class="feature">
+                    <h4>Dual Order Modes</h4>
+                    <p>Martingale (multiplier 1.1x) atau Step Mode (incremental 0.01) untuk menentukan lot setiap layer.</p>
+                </div>
+                <div class="feature">
+                    <h4>Break Even System</h4>
+                    <p>Break even terpisah untuk Main dan Hedge dengan trigger profit dollar dan jarak BE yang dapat diatur.</p>
+                </div>
+                <div class="feature">
+                    <h4>Trailing Stop</h4>
+                    <p>Trailing stop terpisah setelah BE aktif untuk mengunci profit maksimal.</p>
+                </div>
+                <div class="feature">
+                    <h4>Graceful Shutdown</h4>
+                    <p>Grace period saat jam trading habis. Posisi tetap bisa averaging dan close via BE/Trail, tanpa open baru.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Modes -->
+        <div class="section">
+            <h2 class="section-title">Trading Modes</h2>
+            <div class="modes">
+                <div class="mode">
+                    <div class="mode-name">MARTINGALE</div>
+                    <div class="mode-desc">Lot = Lot Awal x 1.1^(Layer-1)</div>
+                </div>
+                <div class="mode">
+                    <div class="mode-name">STEP MODE</div>
+                    <div class="mode-desc">Lot = Lot Awal + (Layer x 0.01)</div>
+                </div>
+                <div class="mode">
+                    <div class="mode-name">SINGLE CYCLE</div>
+                    <div class="mode-desc">Satu siklus Main → Hedge → Selesai</div>
+                </div>
+                <div class="mode">
+                    <div class="mode-name">LOOP INFINITY</div>
+                    <div class="mode-desc">Cycle berulang tanpa henti</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Flow -->
+        <div class="section">
+            <h2 class="section-title">Strategy Flow</h2>
+            <div class="flow">
+                <div class="flow-step"><div class="flow-num">1</div> <span>Deteksi Trend via MA 100</span></div>
+                <div class="flow-step"><div class="flow-num">2</div> <span>Open Main Position (BUY/SELL sesuai trend)</span></div>
+                <div class="flow-step"><div class="flow-num">3</div> <span>Main Averaging setiap GridStep pips</span></div>
+                <div class="flow-step"><div class="flow-num">4</div> <span>Jika layer mencapai HedgeTriggerLayer → Open Hedge (arah berlawanan)</span></div>
+                <div class="flow-step"><div class="flow-num">5</div> <span>Hedge Averaging hingga TP/BE/Trail kena</span></div>
+                <div class="flow-step"><div class="flow-num">6</div> <span>Loop Infinity: Main baru dengan arah kebalikan Hedge</span></div>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="section">
+            <h2 class="section-title">Key Parameters</h2>
+            <table class="param-table">
+                <tr><th>Parameter</th><th>Default</th><th>Deskripsi</th></tr>
+                <tr><td>Lot Size</td><td>0.01</td><td>Lot awal layer pertama</td></tr>
+                <tr><td>Lot Multiplier</td><td>1.1</td><td>Pengali lot Martingale per layer</td></tr>
+                <tr><td>Grid Step</td><td>100 pips</td><td>Jarak antar layer averaging</td></tr>
+                <tr><td>Max Orders</td><td>200</td><td>Maksimal layer/posisi</td></tr>
+                <tr><td>Hedge Trigger Layer</td><td>10</td><td>Layer ke berapa hedge aktif</td></tr>
+                <tr><td>BE Trigger Dollar</td><td>$2.0</td><td>Profit untuk aktivasi BE</td></tr>
+                <tr><td>BE Distance</td><td>10 pips</td><td>Jarak BE dari average price</td></tr>
+                <tr><td>Trailing Step</td><td>20 pips</td><td>Langkah trailing stop</td></tr>
+                <tr><td>Max Floating Loss</td><td>$3000</td><td>Batas floating loss maksimal</td></tr>
+                <tr><td>Daily Profit Target</td><td>$1000</td><td>Target profit harian</td></tr>
+                <tr><td>Daily Loss Limit</td><td>$5000</td><td>Batas rugi harian</td></tr>
+            </table>
+        </div>
+
+        <!-- Risk Management -->
+        <div class="section">
+            <h2 class="section-title">Risk Management System</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>Max Floating Loss</h4>
+                    <p>Auto close semua posisi jika floating loss mencapai batas ($)</p>
+                </div>
+                <div class="feature">
+                    <h4>Daily Profit Target</h4>
+                    <p>Stop trading setelah mencapai target profit harian</p>
+                </div>
+                <div class="feature">
+                    <h4>Daily Loss Limit</h4>
+                    <p>Stop trading jika rugi harian melebihi batas</p>
+                </div>
+                <div class="feature">
+                    <h4>Time Filter</h4>
+                    <p>Batasi trading sesuai jam operasional (support GMT offset)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supported Symbols -->
+        <div class="section">
+            <h2 class="section-title">Supported Symbols</h2>
+            <div class="modes">
+                <div class="mode"><div class="mode-name">FOREX</div><div class="mode-desc">EURUSD, GBPUSD, USDJPY, dll</div></div>
+                <div class="mode"><div class="mode-name">GOLD</div><div class="mode-desc">XAUUSD, GOLD</div></div>
+                <div class="mode"><div class="mode-name">CRYPTO</div><div class="mode-desc">BTCUSD, ETHUSD, LTCUSD</div></div>
+                <div class="mode"><div class="mode-name">INDEX</div><div class="mode-desc">US30, US500, NAS100</div></div>
+                <div class="mode"><div class="mode-name">OIL</div><div class="mode-desc">WTI, Brent, USOIL</div></div>
+                <div class="mode"><div class="mode-name">SILVER</div><div class="mode-desc">XAGUSD</div></div>
+            </div>
+        </div>
+
+        <!-- Warning -->
+        <div class="warning">
+            <h4>RISK DISCLAIMER</h4>
+            <ul style="margin-left: 20px; color: #ccc;">
+                <li>Black Spider Evolution menggunakan strategi Martingale/Grid yang memiliki risiko tinggi</li>
+                <li>Selalu aktifkan Max Floating Loss untuk proteksi</li>
+                <li>Test di demo account terlebih dahulu sebelum real trading</li>
+                <li>Gunakan modal yang cukup untuk menahan drawdown (minimal $1000 untuk XAUUSD)</li>
+                <li>Hasil masa lalu tidak menjamin hasil di masa depan</li>
+                <li>Pastikan Anda memahami risiko sebelum menggunakan EA ini</li>
+            </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta">
+            <h3 style="margin-bottom: 15px;">Ready to Evolve Your Trading?</h3>
+            <p style="margin-bottom: 20px; color: #aaa;">Black Spider Evolution - Smart Hedging + Martingale Grid for MT5</p>
+        </div>
+
+        <!-- Developer Info -->
+        <div class="dev-info">
+            <a href="https://roxyudeveloper.github.io/roxyu" class="dev-link" target="_blank">Official Website</a>
+            <a href="https://t.me/bayuarissandi" class="dev-link" target="_blank">Telegram: @bayuarissandi</a>
+            <a href="https://tiktok.com/@souueei" class="dev-link" target="_blank">TikTok: @souueei</a>
+        </div>
+
+        <!-- Code Info -->
+        <div style="background: #0a0a0a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; margin: 20px 0; border: 1px solid #222;">
+            <span style="color: #c0392b;">// Black Spider Evolution v6.00</span><br>
+            <span style="color: #666;">// Professional Martingale Grid + Smart Hedging System for MT5</span><br>
+            <span style="color: #666;">// Features: Loop Infinity | Dual Magic Numbers | BE + Trailing | Graceful Shutdown</span><br>
+            <span style="color: #666;">// Developer: Roxyu Developer | Support: Forex, Gold, Crypto, Index, Oil</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Copyright 2026 Roxyu Developer | Black Spider Evolution | All Rights Reserved</p>
+            <p style="margin-top: 8px;">Trading Forex dan CFD memiliki risiko tinggi. Pastikan Anda memahami risikonya sebelum trading.</p>
+        </div>
+    </div>
+</body>
+</html>
