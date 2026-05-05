@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Roxyu Developer | Expert Advisor MT4/MT5</title>
     <link rel="icon" type="image/png" href="https://roxyudeveloper.github.io/roxyu/assets/img/roxyuteam.png">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -362,10 +362,11 @@
             align-items: center;
         }
 
+        /* PERBAIKAN: Frame untuk gambar tim dengan rasio 16:9 (1280x720) tanpa crop */
         .about-image-frame {
             width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1;
+            max-width: 640px;
+            aspect-ratio: 16 / 9;
             background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
             border-radius: 20px;
             border: 1px solid var(--border-color);
@@ -374,7 +375,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            padding: 1.5rem;
+            padding: 0;
         }
 
         .about-image-frame::before {
@@ -387,6 +388,7 @@
             background: conic-gradient(from 0deg, transparent, var(--accent-cyan), transparent 30%);
             animation: rotate 4s linear infinite;
             opacity: 0.3;
+            pointer-events: none;
         }
 
         @keyframes rotate {
@@ -400,6 +402,7 @@
             border-radius: 12px;
             position: relative;
             z-index: 1;
+            background-color: #0a0a0f;
         }
 
         .about-text h3 {
@@ -435,7 +438,7 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
             max-width: 1400px;
             margin: 0 auto;
@@ -474,9 +477,10 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
+        /* PERBAIKAN: Container gambar produk dengan ukuran 500x500px (rasio 1:1) tanpa crop */
         .product-icon {
             width: 100%;
-            height: 180px;
+            aspect-ratio: 1 / 1;
             background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             border-radius: 12px;
             display: flex;
@@ -490,13 +494,14 @@
         .product-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 12px;
             transition: transform 0.4s ease;
+            background-color: #0f0f17;
         }
 
         .product-card:hover .product-icon img {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .product-badge {
@@ -620,9 +625,10 @@
             transform: rotate(-45deg);
         }
 
+        /* Modal image juga menggunakan contain agar tidak terpotong */
         .modal-image {
             width: 100%;
-            height: 300px;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 20px 20px 0 0;
             background: var(--bg-tertiary);
@@ -636,6 +642,7 @@
             height: 100%;
             object-fit: contain;
             padding: 1rem;
+            background: #0a0a0f;
         }
 
         .modal-body {
@@ -995,7 +1002,7 @@
 
             .about-image {
                 order: -1;
-                max-width: 350px;
+                max-width: 500px;
                 margin: 0 auto;
             }
 
@@ -1049,7 +1056,7 @@
             }
 
             .modal-image {
-                height: 200px;
+                aspect-ratio: 16 / 9;
             }
 
             .modal-actions {
@@ -1082,24 +1089,13 @@
 </head>
 <body>
     <div class="grid-bg"></div>
-
-    <div class="particles">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
-        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
-        <div class="particle" style="left: 90%; animation-delay: 3.5s;"></div>
-    </div>
+    <div class="particles"></div>
 
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div class="modal-close" onclick="closeModal()"></div>
             <div class="modal-image">
-                <img id="modalImage" src="" alt="Product Image">
+                <img id="modalImage" src="" alt="Gambar Produk">
             </div>
             <div class="modal-body">
                 <span class="modal-badge" id="modalBadge"></span>
@@ -1107,478 +1103,105 @@
                 <p class="modal-category" id="modalCategory"></p>
                 <p class="modal-description" id="modalDescription"></p>
                 <div class="modal-features">
-                    <h4>Features</h4>
+                    <h4>Fitur Utama</h4>
                     <ul id="modalFeatures"></ul>
                 </div>
                 <div class="modal-actions">
-                    <a href="#" id="modalLink" target="_blank" rel="noopener noreferrer" class="btn-primary">Go Check</a>
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Close</button>
+                    <a href="#" id="modalLink" target="_blank" rel="noopener noreferrer" class="btn-primary">Lihat Detail</a>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
 
     <nav>
-        <div class="logo">ROXYU<span>.</span>DEV</div>
+        <div class="logo">ROXYU<span>.</span>Team</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#vision">Vision</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#products">Produk</a></li>
+            <li><a href="#features">Fitur</a></li>
+            <li><a href="#vision">Visi</a></li>
+            <li><a href="#contact">Kontak</a></li>
         </ul>
         <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </nav>
 
     <section class="hero" id="home">
         <div class="hero-content">
-            <span class="hero-badge fade-in">Expert Advisor Developer</span>
-            <h1 class="fade-in delay-1">
-                Building <span class="highlight">Intelligent</span><br>
-                Trading Systems
-            </h1>
-            <p class="hero-subtitle fade-in delay-2">
-                Pengembang Expert Advisor MT4/MT5 yang fokus pada keamanan balance, 
-                stabilitas, dan performa trading yang konsisten.
-            </p>
+            <span class="hero-badge fade-in">Pengembang Expert Advisor</span>
+            <h1 class="fade-in delay-1">Membangun <span class="highlight">Sistem Trading</span> Cerdas</h1>
+            <p class="hero-subtitle fade-in delay-2">Pengembang Expert Advisor MT4/MT5 yang fokus pada keamanan balance, stabilitas, dan performa trading konsisten.</p>
             <div class="hero-cta fade-in delay-3">
-                <a href="#products" class="btn-primary">Lihat Products</a>
+                <a href="#products" class="btn-primary">Lihat Produk</a>
                 <a href="#contact" class="btn-secondary">Hubungi Saya</a>
             </div>
             <div class="stats fade-in delay-4">
-                <div class="stat-item">
-                    <span class="stat-number">1000+</span>
-                    <span class="stat-label">Free Download Worldwide</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">400+</span>
-                    <span class="stat-label">Premium Member</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">1500+</span>
-                    <span class="stat-label">ID License</span>
-                </div>
+                <div class="stat-item"><span class="stat-number">1000+</span><span class="stat-label">2025-2026 Unduhan</span></div>
+                <div class="stat-item"><span class="stat-number">400+</span><span class="stat-label">Member Premium</span></div>
+                <div class="stat-item"><span class="stat-number">1500+</span><span class="stat-label">ID Lisensi</span></div>
             </div>
         </div>
     </section>
 
     <section class="about" id="about">
-        <div class="section-header">
-            <span class="section-tag">// Tentang Saya</span>
-            <h2 class="section-title">The Story Behind Roxyu Developer</h2>
-        </div>
+        <div class="section-header"><span class="section-tag">// Tentang Saya</span><h2 class="section-title">Kisah di Balik Roxyu Team</h2></div>
         <div class="about-content">
-            <div class="about-image">
-                <div class="about-image-frame">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/roxyuteam.png" alt="RoxyuTeam">
-                </div>
-            </div>
-            <div class="about-text">
-                <h3>Halo, Saya Bay</h3>
-                <p>
-                    Roxyu Developer dibangun atas dasar iseng. Sebelum terjun ke dunia robot trading forex, 
-                    saya adalah pengemod handal game Minecraft dan pernah menjadi pengembang aplikasi Android 
-                    seperti pemutar musik, wallpaper, dan lainnya. Semua saya lakukan sendiri tanpa tim.
-                </p>
-                <p>
-                    Setelah berbagai kegagalan, saya kembali ke dunia trading dengan basic forex sejak SMA. 
-                    Trading manual membuat emosi dan ego memuncak, berakhir dengan MC berkali-kali. 
-                    Dari situlah saya mulai membuat EA pertama di MQL5.
-                </p>
-                <div class="about-highlight">
-                    <p>
-                        "EA pertama saya berhasil mengubah modal $20 menjadi $150 dalam 1 bulan. 
-                        Saya share secara gratis dan dalam 2 hari sudah didownload lebih dari 1000 orang."
-                    </p>
-                </div>
-                <p>
-                    Kini saya membangun komunitas anti drama, dimana semua EA bisa dipakai gratis di dalam grup. 
-                    Semua dana yang masuk digunakan untuk operasional, hire admin, dan pengembangan EA yang lebih baik.
-                </p>
-            </div>
+            <div class="about-image"><div class="about-image-frame"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/roxyuteam.png" alt="RoxyuTeam"></div></div>
+            <div class="about-text"><h3>Halo, Saya Bay</h3><p>Roxyu Team dibangun atas dasar iseng. Sebelum terjun ke dunia robot trading forex, saya adalah pengemod handal game Minecraft dan pernah menjadi pengembang aplikasi Android seperti pemutar musik, wallpaper, dan lainnya. Semua saya lakukan sendiri tanpa tim.</p><p>Setelah berbagai kegagalan, saya kembali ke dunia trading dengan basic forex sejak SMA. Trading manual membuat emosi dan ego memuncak, berakhir dengan MC berkali-kali. Dari situlah saya mulai membuat EA pertama di MQL5.</p><div class="about-highlight"><p>"EA pertama saya berhasil mengubah modal $20 menjadi $150 dalam 1 bulan. Saya share secara gratis dan dalam 2 hari sudah didownload lebih dari 1000 orang."</p></div><p>Kini saya membangun komunitas anti drama, dimana semua EA bisa dipakai gratis di dalam grup. Semua dana yang masuk digunakan untuk operasional, hire admin, dan pengembangan EA yang lebih baik.</p></div><p>Bahasa pemrograman yang saya kuasai JAVA,Kotlin,C+,HTML,Python,PHP.</p></div>
         </div>
     </section>
 
     <section class="products" id="products">
-        <div class="section-header">
-            <span class="section-tag">// Expert Advisors</span>
-            <h2 class="section-title">Products & Tools</h2>
-            <p class="section-desc">
-                Koleksi Expert Advisor yang telah dibuat dan dapat dipakai gratis di dalam komunitas
-            </p>
-        </div>
-
+        <div class="section-header"><span class="section-tag">// Expert Advisors</span><h2 class="section-title">Produk & Alat</h2><p class="section-desc">Koleksi Expert Advisor yang telah dibuat dan dapat dipakai gratis di dalam komunitas</p></div>
         <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png"
-                data-title="Black Trojan Evolution"
-                data-badge="Heavy Class"
-                data-category="Automatic"
-                data-description="Expert Advisor dengan strategi agresif untuk kondisi market yang volatile. Dirancang khusus untuk trader yang memiliki toleransi risiko tinggi dan menginginkan potensi profit maksimal dalam waktu singkat."
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/blacktrojanevolution.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" alt="Black Trojan Evolution">
-                </div>
-                <span class="product-badge">Heavy Class</span>
-                <h3>Black Trojan Evolution</h3>
-                <p class="category">Automatic</p>
-                <p>Expert Advisor Kompleksifitas tinggi</p>
-            </div>            
-        </div>
-        <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bs.png"
-                data-title="Black Spider Evolution"
-                data-badge="Medium Class"
-                data-category="Automatic"
-                data-description="Expert Advisor dengan strategi FTT + Hedging"
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/bs.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/bs.png" alt="Black Spider Evolution">
-                </div>
-                <span class="product-badge">Heavy Class</span>
-                <h3>Black Trojan Evolution</h3>
-                <p class="category">Automatic</p>
-                <p>Expert Advisor Kompleksifitas medium</p>
-            </div>            
-        </div>
-        <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png"
-                data-title="Black Trojan Mini"
-                data-badge="Medium Class"
-                data-category="Automatic"
-                data-description="Expert Advisor dengan strategi Counter + FTT + Hedging"
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/btm.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" alt="Black Trojan Mini">
-                </div>
-                <span class="product-badge">Medium Class</span>
-                <h3>Black Trojan Mini</h3>
-                <p class="category">Automatic</p>
-                <p>Expert Advisor Kompleksifitas medium</p>
-            </div>            
-        </div>
-        <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/kt.png"
-                data-title="King Tools"
-                data-badge="Low Class"
-                data-category="Automatic"
-                data-description="Expert Advisor/Tools Trading Semi Manual"
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kt.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/kt.png" alt="King Tools">
-                </div>
-                <span class="product-badge">Low Class</span>
-                <h3>King Tools</h3>
-                <p class="category">Semi Automatic</p>
-                <p>Tools Trading Mt5</p>
-            </div>            
-        </div>
-        <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/ph.png"
-                data-title="Pencuri Handal"
-                data-badge="Low Class"
-                data-category="Automatic"
-                data-description="Expert Advisor Fast Scalping XAUUSD"
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/ph.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/ph.png" alt="Pencuri Handal">
-                </div>
-                <span class="product-badge">Low Class</span>
-                <h3>Pencuri Handal</h3>
-                <p class="category">Automatic</p>
-                <p>Expert Advisor Fast Scalping</p>
-            </div>            
-        </div>
-        <div class="products-grid">
-            <div class="product-card" onclick="openModal(this)" 
-                data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bxz.png"
-                data-title="BarBarXZoro"
-                data-badge="Low Class"
-                data-category="Automatic"
-                data-description="Expert Advisor Fleksible One Shoot"
-                data-features="Lengkap"
-                data-link="https://roxyudeveloper.github.io/roxyu/assets/project/bxz.html">
-                <div class="product-icon">
-                    <img src="https://roxyudeveloper.github.io/roxyu/assets/img/bxz.png" alt="BarBarXZoro">
-                </div>
-                <span class="product-badge">Low Class</span>
-                <h3>BarBarXZoro</h3>
-                <p class="category">Automatic</p>
-                <p>Expert Advisor ONE SHOOT</p>
-            </div>            
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" data-title="Black Trojan Evolution" data-badge="Heavy Class" data-category="Otomatis" data-description="Expert Advisor dengan strategi agresif untuk kondisi market yang volatile. Dirancang khusus untuk trader yang memiliki toleransi risiko tinggi dan menginginkan potensi profit maksimal dalam waktu singkat." data-features="Strategi Agresif,Manajemen Risiko Dinamis,Optimal untuk Pair Mayor,Support MT4/MT5" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/blacktrojanevolution.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" alt="Black Trojan Evolution"></div><span class="product-badge">Heavy Class</span><h3>Black Trojan Evolution</h3><p class="category">Otomatis</p><p>Expert Advisor kompleksitas tinggi</p></div>
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bs.png" data-title="Black Spider Evolution" data-badge="Medium Class" data-category="Otomatis" data-description="Expert Advisor dengan strategi FTT + Hedging yang seimbang antara keamanan dan profitabilitas." data-features="Strategi FTT & Hedging,Mode Proteksi Modal,Optimal di GOLD & EURUSD,Update Berkala" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/bs.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/bs.png" alt="Black Spider Evolution"></div><span class="product-badge">Medium Class</span><h3>Black Spider Evolution</h3><p class="category">Otomatis</p><p>Strategi FTT + Hedging</p></div>
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" data-title="Black Trojan Mini" data-badge="Medium Class" data-category="Otomatis" data-description="Versi ringan dari Black Trojan dengan strategi Counter + FTT + Hedging, cocok untuk akun kecil." data-features="Counter + FTT + Hedging,Entry Presisi,Ukuran Lot Fleksibel,Monitoring Floating" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/btm.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/bt1.png" alt="Black Trojan Mini"></div><span class="product-badge">Medium Class</span><h3>Black Trojan Mini</h3><p class="category">Otomatis</p><p>Versi ringan dengan akurasi tinggi</p></div>
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/kt.png" data-title="King Tools" data-badge="Low Class" data-category="Semi Otomatis" data-description="Tools trading semi manual untuk membantu entry, manajemen posisi, dan analisis cepat di MT5." data-features="Panel Kontrol,Sinyal Entry Semi-Manual,Manajemen Risk,Support MT5" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/kt.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/kt.png" alt="King Tools"></div><span class="product-badge">Low Class</span><h3>King Tools</h3><p class="category">Semi Otomatis</p><p>Panel kontrol trading MT5</p></div>
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/ph.png" data-title="Pencuri Handal" data-badge="Low Class" data-category="Otomatis" data-description="Expert Advisor fast scalping khusus XAUUSD dengan eksekusi cepat dan target kecil namun akurat." data-features="Fast Scalping Khusus XAUUSD,Spread Filter,Trailing Stop Dinamis,Optimasi Latensi" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/ph.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/ph.png" alt="Pencuri Handal"></div><span class="product-badge">Low Class</span><h3>Pencuri Handal</h3><p class="category">Otomatis</p><p>Fast Scalping XAUUSD</p></div>
+            <div class="product-card" onclick="openModal(this)" data-image="https://roxyudeveloper.github.io/roxyu/assets/img/bxz.png" data-title="BarBarXZoro" data-badge="Low Class" data-category="Otomatis" data-description="Expert Advisor fleksibel dengan strategi one shoot, cocok untuk trader yang suka eksekusi langsung tanpa averaging." data-features="Strategi One Shoot,Stop Loss Likuid,Entry Terprogram,Compatible MT4" data-link="https://roxyudeveloper.github.io/roxyu/assets/project/bxz.html"><div class="product-icon"><img src="https://roxyudeveloper.github.io/roxyu/assets/img/bxz.png" alt="BarBarXZoro"></div><span class="product-badge">Low Class</span><h3>BarBarXZoro</h3><p class="category">Otomatis</p><p>EA ONE SHOOT fleksibel</p></div>
         </div>
     </section>
 
     <section class="features" id="features">
-        <div class="section-header">
-            <span class="section-tag">// Fitur Komunitas</span>
-            <h2 class="section-title">What You Get</h2>
-            <p class="section-desc">
-                Benefit yang didapat ketika bergabung dengan komunitas Roxyu Developer
-            </p>
-        </div>
+        <div class="section-header"><span class="section-tag">// Fitur Komunitas</span><h2 class="section-title">Yang Anda Dapatkan</h2><p class="section-desc">Keuntungan bergabung dengan komunitas Roxyu Developer</p></div>
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-                </div>
-                <h3>Indicator Gratis</h3>
-                <p>Berbagai indicator dari developer dan kontribusi member yang bisa digunakan bebas.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                </div>
-                <h3>Tutorial Lengkap</h3>
-                <p>Tersedia banyak tutorial untuk membantu memahami penggunaan setiap EA dan tools.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                </div>
-                <h3>Informasi Transparan</h3>
-                <p>Semua pengetahuan dibuka secara terang-terangan, tidak ada yang ditutup-tutupi.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                </div>
-                <h3>Share SET</h3>
-                <p>Sharing settingan dari para member untuk setiap EA agar performa optimal.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                </div>
-                <h3>Diskusi Bebas</h3>
-                <p>Forum diskusi bebas untuk berbagi kritik, saran, dan pengalaman trading.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6a3.5 3.5 0 0 0-3.5 3.5 1 1 0 0 0 2 0A1.5 1.5 0 1 1 12 11a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-1.16A3.49 3.49 0 0 0 12 6z"/><circle cx="12" cy="17" r="1"/></svg>
-                </div>
-                <h3>IDE Logic Sharing</h3>
-                <p>Berbagi logika pengembangan EA untuk belajar membuat EA menggunakan AI.</p>
-            </div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div><h3>Indikator Gratis</h3><p>Berbagai indikator dari developer dan kontribusi member yang bisa digunakan bebas.</p></div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><h3>Tutorial Lengkap</h3><p>Tersedia banyak tutorial untuk memahami penggunaan setiap EA dan tools.</p></div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div><h3>Informasi Transparan</h3><p>Semua pengetahuan dibuka secara terang-terangan, tidak ada yang ditutup-tutupi.</p></div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><h3>Share SET</h3><p>Berbagi pengaturan dari para member untuk setiap EA agar performa optimal.</p></div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Diskusi Bebas</h3><p>Forum diskusi bebas untuk berbagi kritik, saran, dan pengalaman trading.</p></div>
+            <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6a3.5 3.5 0 0 0-3.5 3.5 1 1 0 0 0 2 0A1.5 1.5 0 1 1 12 11a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-1.16A3.49 3.49 0 0 0 12 6z"/><circle cx="12" cy="17" r="1"/></svg></div><h3>IDE Logic Sharing</h3><p>Berbagi logika pengembangan EA untuk belajar membuat EA.</p></div>
         </div>
     </section>
 
     <section class="vision" id="vision">
-        <div class="section-header">
-            <span class="section-tag">// Visi & Misi</span>
-            <h2 class="section-title">Our Direction</h2>
-        </div>
-        <div class="vision-container">
-            <div class="vision-grid">
-                <div class="vision-card">
-                    <h3>VISI</h3>
-                    <ul class="vision-list">
-                        <li>Komunitas yang sehat dan transparan tanpa pamer</li>
-                        <li>Tanpa senggol sana sini, anti drama</li>
-                        <li>EA yang berbeda dan mengedepankan keamanan balance</li>
-                        <li>Terus berkembang mengikuti modernisasi</li>
-                    </ul>
-                </div>
-                <div class="vision-card">
-                    <h3>MISI</h3>
-                    <ul class="vision-list">
-                        <li>Pengembangan EA tahan kondisi market gonjang-ganjing</li>
-                        <li>Sharing info tanpa mengklaim sebagai "edukasi"</li>
-                        <li>Tidak memberi angan-angan indah, tetap realistis</li>
-                        <li>Di puji tidak terbang, di hujat tidak tumbang</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="disclaimer">
-                <h4>DISCLAIMER</h4>
-                <p>
-                    Trading memiliki resiko tinggi. Saya tidak pernah mengajak dan memberi angan-angan indah. 
-                    Saya realistis — jika belum paham tentang bidang ini, diwajibkan pelajari semua tentang trading terlebih dahulu.
-                </p>
-            </div>
-        </div>
+        <div class="section-header"><span class="section-tag">// Visi & Misi</span><h2 class="section-title">Arah Komunitas</h2></div>
+        <div class="vision-container"><div class="vision-grid"><div class="vision-card"><h3>VISI</h3><ul class="vision-list"><li>Komunitas yang sehat dan transparan tanpa pamer</li><li>Tanpa senggol sana sini, anti drama</li><li>EA yang berbeda dan mengedepankan keamanan balance</li><li>Terus berkembang mengikuti modernisasi</li></ul></div><div class="vision-card"><h3>MISI</h3><ul class="vision-list"><li>Pengembangan EA tahan kondisi market gonjang-ganjing</li><li>Sharing info tanpa mengklaim sebagai "edukasi"</li><li>Tidak memberi angan-angan indah, tetap realistis</li><li>Di puji tidak terbang, di hujat tidak tumbang</li></ul></div></div><div class="disclaimer"><h4>DISCLAIMER</h4><p>Trading memiliki resiko tinggi. Saya tidak pernah mengajak dan memberi angan-angan indah. Saya realistis — jika belum paham tentang bidang ini, diwajibkan pelajari semua tentang trading terlebih dahulu.</p></div></div>
     </section>
 
-    <section class="quote-section">
-        <div class="quote-container">
-            <span class="quote-icon">"</span>
-            <p class="quote-text">
-                Banyak hal yang saya pelajari dari perjalanan ini. Tidak semua tentang bagaimana mencapai tujuan atau uang. 
-                Tetap berjalan biasa, terus belajar, dan tetap rendah. Karena rezeki sudah ada porsinya masing-masing, 
-                tidak perlu takut untuk miskin.
-            </p>
-            <span class="quote-author">— BAY | ROXYU DEVELOPER</span>
-        </div>
-    </section>
+    <section class="quote-section"><div class="quote-container"><span class="quote-icon">"</span><p class="quote-text">Banyak hal yang saya pelajari dari perjalanan ini. Tidak semua tentang bagaimana mencapai tujuan atau uang. Tetap berjalan biasa, terus belajar, dan tetap rendah. Karena rezeki sudah ada porsinya masing-masing, tidak perlu takut untuk miskin.</p><span class="quote-author">— BAY | ROXYU TEAM</span></div></section>
 
-    <section class="contact" id="contact">
-        <div class="contact-container">
-            <div class="section-header">
-                <span class="section-tag">// Hubungi</span>
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-desc">
-                    Tertarik bergabung atau ingin bekerja sama? Hubungi melalui channel berikut
-                </p>
-            </div>
-            <div class="contact-methods">
-                <a href="https://t.me/bayuarissandi" target="_blank" rel="noopener noreferrer" class="contact-item">
-                    <div class="contact-icon">
-                        <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
-                    </div>
-                    <h4>Telegram Owner</h4>
-                    <p>@bayuarissandi</p>
-                </a>
-                <a href="https://t.me/cummadia" target="_blank" rel="noopener noreferrer" class="contact-item">
-                    <div class="contact-icon">
-                        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    </div>
-                    <h4>Admin Fast Respond</h4>
-                    <p>@cummadia</p>
-                </a>
-                <a href="mailto:roxyudeveloper@gmail.com" class="contact-item">
-                    <div class="contact-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    </div>
-                    <h4>Email</h4>
-                    <p>roxyudeveloper@gmail.com</p>
-                </a>
-            </div>
-        </div>
-    </section>
+    <section class="contact" id="contact"><div class="contact-container"><div class="section-header"><span class="section-tag">// Hubungi</span><h2 class="section-title">Tautan Kontak</h2><p class="section-desc">Tertarik bergabung atau ingin bekerja sama? Hubungi melalui channel berikut</p></div><div class="contact-methods"><a href="https://t.me/bayuarissandi" target="_blank" rel="noopener noreferrer" class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></div><h4>Telegram Owner</h4><p>@bayuarissandi</p></a><a href="https://t.me/cummadia" target="_blank" rel="noopener noreferrer" class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>Admin Fast Respond</h4><p>@cummadia</p></a><a href="mailto:roxyudeveloper@gmail.com" class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><h4>Email</h4><p>roxyudeveloper@gmail.com</p></a></div></div></section>
 
-    <footer>
-        <div class="footer-logo">ROXYU.DEV</div>
-        <p class="footer-text">2025 Roxyu Developer. Building intelligent trading systems.</p>
-    </footer>
+    <footer><div class="footer-logo">ROXYU.DEV</div><p class="footer-text">2025 Roxyu Team. Membangun sistem trading cerdas.</p></footer>
 
     <script>
-        function toggleMenu() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        }
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.querySelector('.nav-links').classList.remove('active');
-            });
-        });
-
-        // PERBAIKAN: Smooth scroll hanya untuk anchor link internal
-        document.querySelectorAll('.nav-links a[href^="#"], .hero-cta a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && href.startsWith('#') && href.length > 1) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
-        });
-
-        function openModal(card) {
-            const modal = document.getElementById('productModal');
-            const image = card.dataset.image;
-            const title = card.dataset.title;
-            const badge = card.dataset.badge;
-            const category = card.dataset.category;
-            const description = card.dataset.description;
-            const features = card.dataset.features.split(',');
-            const link = card.dataset.link;
-
-            document.getElementById('modalImage').src = image;
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalBadge').textContent = badge;
-            document.getElementById('modalCategory').textContent = category;
-            document.getElementById('modalDescription').textContent = description;
-            document.getElementById('modalLink').href = link;
-
-            const featuresList = document.getElementById('modalFeatures');
-            featuresList.innerHTML = '';
-            features.forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature.trim();
-                featuresList.appendChild(li);
-            });
-
-            modal.classList.add('active');
-            document.body.classList.add('modal-open');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('productModal');
-            modal.classList.remove('active');
-            document.body.classList.remove('modal-open');
-        }
-
-        document.getElementById('productModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // PERBAIKAN: Event listener khusus untuk tombol Go Check
-        document.getElementById('modalLink').addEventListener('click', function(e) {
-            e.stopPropagation();
-            const url = this.href;
-            if (url && url !== '#' && url !== window.location.href + '#') {
-                window.open(url, '_blank', 'noopener,noreferrer');
-            }
-        });
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.product-card, .feature-card, .vision-card, .contact-item').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(10,10,15,0.98)';
-            } else {
-                nav.style.background = 'rgba(10,10,15,0.9)';
-            }
-        });
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+        document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('active')));
+        document.querySelectorAll('.nav-links a[href^="#"], .hero-cta a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const href = this.getAttribute('href'); if (href && href.startsWith('#') && href.length > 1) { e.preventDefault(); const target = document.querySelector(href); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+        function openModal(card) { const modal = document.getElementById('productModal'); const featuresRaw = card.dataset.features || "Fitur lengkap,Update berkala,Support komunitas"; const featuresList = featuresRaw.split(','); document.getElementById('modalImage').src = card.dataset.image; document.getElementById('modalTitle').textContent = card.dataset.title; document.getElementById('modalBadge').textContent = card.dataset.badge; document.getElementById('modalCategory').textContent = card.dataset.category; document.getElementById('modalDescription').textContent = card.dataset.description; document.getElementById('modalLink').href = card.dataset.link; const featuresUl = document.getElementById('modalFeatures'); featuresUl.innerHTML = ''; featuresList.forEach(f => { const li = document.createElement('li'); li.textContent = f.trim(); featuresUl.appendChild(li); }); modal.classList.add('active'); document.body.classList.add('modal-open'); }
+        function closeModal() { document.getElementById('productModal').classList.remove('active'); document.body.classList.remove('modal-open'); }
+        document.getElementById('productModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+        document.getElementById('modalLink').addEventListener('click', function(e) { e.stopPropagation(); const url = this.href; if (url && url !== '#' && url !== window.location.href + '#') window.open(url, '_blank', 'noopener,noreferrer'); });
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } }); }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.product-card, .feature-card, .vision-card, .contact-item').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(el); });
+        window.addEventListener('scroll', () => { const nav = document.querySelector('nav'); nav.style.background = window.scrollY > 100 ? 'rgba(10,10,15,0.98)' : 'rgba(10,10,15,0.9)'; });
+        for(let i=0;i<30;i++){ let p=document.createElement('div'); p.className='particle'; p.style.left=Math.random()*100+'%'; p.style.animationDelay=Math.random()*20+'s'; p.style.animationDuration=15+Math.random()*20+'s'; document.querySelector('.particles').appendChild(p); }
     </script>
 </body>
 </html>
